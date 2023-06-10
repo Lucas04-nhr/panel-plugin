@@ -78,12 +78,3 @@ export class compate extends plugin {
         return uid
     }
 }
-// function getJSON(url) {
-//     //获取指定绝对路径的json
-//     return JSON.parse(fs.readFileSync(url))
-// }
-
-// function getConfig(name) {
-//     //获取config
-//     return getJSON(`plugins/panel-plugin/config/${name}.json`)
-// }

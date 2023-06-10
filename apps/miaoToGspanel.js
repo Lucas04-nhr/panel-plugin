@@ -1,7 +1,9 @@
 import a from "../model/tools.js"
 
-let { resource, MiaoPath, GspanelPath, MiaoResourecePath } = a.getJSON("plugins/panel-plugin/config/path.json")
+let { resource, MiaoPath, GspanelPath, MiaoResourecePath, BackupGspanelPath } = a.getJSON("plugins/panel-plugin/config/path.json")
 let { redisStart, errorTIP, pluginINFO } = a.getJSON("plugins/panel-plugin/config/info.json")
+
+let { backupGspanel } = a.getConfig("settings")
 
 // console.log(MiaoResourecePath.toString())
 if (!fs.existsSync(GspanelPath)) {
@@ -128,8 +130,17 @@ export class miaoToGspanel extends plugin {
             //调用前已经判断过该uid一定有面板数据，并且所有路径无误，所以接下来就是修改面板数据以适配Gspanel
             //修正面板数据，在对应目录生成文件。返回值表示处理结果(true：转换成功，其他返回值：转换失败。失败时返回报错内容以便查看日志。)
             let Miao = a.getJSON(MiaoPath + uid + ".json")
-            //TODO：备份
-            let Gspanel = { "avatars": [], "next": Math.floor(Miao._profile / 1000) }
+            let Gspanel = GspanelPath + uid + ".json"
+            if (backupGspanel && fs.existsSync(Gspanel)) {
+                //如果需要备份且有Gspanel面板
+                Gspanel = a.getJSON(Gspanel)
+                let target = BackupGspanelPath + uid + ".json"
+                if (!fs.existsSync(target)) {
+                    //如果没有备份，则进行一次备份。
+                    fs.writeFileSync(target, JSON.stringify(Gspanel))
+                }
+            }
+            Gspanel = { "avatars": [], "next": Math.floor(Miao._profile / 1000) }
             for (let i in Miao.avatars) {
                 //MiaoChar：喵喵面板的具体一个角色的数据
                 let MiaoChar = Miao.avatars[i]
