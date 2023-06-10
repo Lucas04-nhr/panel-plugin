@@ -1,1 +1,9 @@
-{"resource":"plugins/panel-plugin/resources/meta/","MiaoPath":"data/UserData/","GspanelPath":"plugins/py-plugin/data/gspanel/cache/","MiaoResourecePath":"plugins/miao-plugin/resources/meta/","GenshinDataRepoDownload":"https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/"}
+{
+    "GspanelPath": "plugins/py-plugin/data/gspanel/cache/",
+    "resource": "plugins/panel-plugin/resources/meta/",
+    "MiaoPath": "data/UserData/",
+    "MiaoResourecePath": "plugins/miao-plugin/resources/meta/",
+    "GenshinDataRepoDownload": "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master/ExcelBinOutput/",
+    "BackupMiaoPath": "plugins/panel-plugin/resources/panel_backup/miao-plugin/",
+    "BackupGspanelPath": "plugins/panel-plugin/resources/panel_backup/nonebot-plugin-gspanel/"
+}

@@ -12,7 +12,7 @@ let char_data_Gspanel = getJSON(GspanelPath + "../char-data.json")
 let WeaponID_To_IconName = getJSON(resource + "WeaponID_To_IconName.json")
 //PlayerElem_To_ConsIconName:旅行者元素到命座图标的映射
 let PlayerElem_To_ConsIconName = getJSON(resource + "PlayerElem_To_ConsIconName.json")
-//attr_map:属性id到属性英文的映射+属性英文到属性中文的映射
+//attr_map:属性id到属性英文的映射
 let attr_map = getJSON(resource + "attr_map.json")
 //dataRelicSet:圣遗物名称→套装名称 套装名称→套装id 套装id→套装效果
 let dataRelicSet = getJSON(resource + "dataRelicSet.json")
@@ -110,7 +110,7 @@ export class miaoToGspanel extends plugin {
         } else {
             uid = uid[0]
         }
-        if (!fs.existsSync(MiaoPath.concat(`${uid}.json`))) {
+        if (!fs.existsSync(MiaoPath + uid + ".json")) {
             this.reply("没有面板数据是不可以转换的！发送“#更新面板”来更新面板数据~")
             return false
         }
