@@ -1,4 +1,4 @@
-这个插件首先是准备把https://gitee.com/CUZNIL/Yunzai-MiaoToGspanel的功能完整搬运过来。
+这个插件首先是准备把https://gitee.com/CUZNIL/Yunzai-MiaoToGspanel 的功能完整搬运过来。
 
 然后就是为啥要写这个插件了。。我的喵喵面板旧数据现在不认了，所以准备写一个插件转一下格式。
 
