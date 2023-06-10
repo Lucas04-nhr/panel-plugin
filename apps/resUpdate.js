@@ -112,12 +112,18 @@ export class resUpdate extends plugin {
                 ...mainIdMap,
                 ...attrIdMap
             }
+            let once = true
             for (let i in ori) {
                 try {
                     ori[i].value = Number(ori[i].value)
-                    if (ori[i].value > 10000)
+                    if (ori[i].value > 10000) {
                         //太大了，九成是bug了，手动修复下。
                         ori[i].value /= 100000000
+                        if (once) {
+                            this.reply("导入meta.js的部分小数数据异常，原因不明，已暴力修复。保险起见建议重启后在执行#属性映射更新 。")
+                            once = false
+                        }
+                    }
                     if (ori[i].key.search(/Plus|mastery/g) == -1)
                         //如果value是百分数，为了格式统一将其扩大为100倍
                         ori[i].value *= 100
