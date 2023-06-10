@@ -64,19 +64,69 @@ export class compate extends plugin {
                 fs.writeFileSync(old, JSON.stringify(result))
             }
             for (let i in result.avatars) {
+                let docker = {
+                    "level": 1,
+                    "star": 5,
+                    "name": "教官的羽饰",
+                    "main": {
+                        "key": "atkPlus",
+                        "value": 42
+                    },
+                    "attrs": [
+                        {
+                            "key": "mastery",
+                            "value": 15
+                        },
+                        {
+                            "key": "cpct",
+                            "value": 2.2
+                        },
+                        {
+                            "key": "defPlus",
+                            "value": 15
+                        },
+                        {}
+                    ]
+                }
                 for (let j in result.avatars[i].artis) {
-                    let docker = result.avatars[i].artis[j]
+                    docker = result.avatars[i].artis[j]
                     if (docker.main) {
-                        console.log(result.avatars[i].artis[j])
+                        // console.log(result.avatars[i].artis[j])
                         //如果是旧版圣遗物数据，则进行调整。
-                        //主词条
-                        docker.mainId = attr_map[docker.main.key][0]
+                        //先处理主词条
+                        docker.mainId = attr_map[docker.main.key][0][0]
+                        //TODO:再处理副词条
+                        let list = []
+                        if (docker.star > 2) {
+                            //一般都是四挡，除非3星都不到。
+                            for (let k in docker.attrs) {
+                                let { key, value } = docker.attrs[k]
+                                if (!key) break;
+                                //该词条非空，可以录入attrIds
+                                value = Number((value / attr_map[key][docker.star]).toFixed(1))
+                                key = docker.star + attr_map[key][0][1]
+                                if (value % 1) {
+                                    //如果不是整数档位，则需要判断有几个词条是合理的。
+                                    //TODO：非整数档位
+                                    console.log("\n\n123456")
+                                } else {
+                                    //如果正好是整数档位
+                                    while (value--) {
+                                        list.push(key + "4")
+                                    }
+                                }
+                                // console.log({ key, value })
+                            }
+                        } else {
+                            //TODO:二三档圣遗物([0.8,1.0],[0.7,0.85,1.0])
+                        }
+                        docker.attrIds = list
+                        //最后删除旧的主副词条
                         delete docker.main
-                        //TODO:副词条
-
+                        delete docker.attrs
                         //调整完毕，赋值。
                         result.avatars[i].artis[j] = docker
-                        console.log(result.avatars[i].artis[j])
+                        // console.log(result.avatars[i].artis[j])
                     }
                 }
             }

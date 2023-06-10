@@ -118,9 +118,9 @@ export class resUpdate extends plugin {
                     ori[i].value = Number(ori[i].value)
                     if (ori[i].value > 10000) {
                         //太大了，九成是bug了，手动修复下。
-                        ori[i].value /= 100000000
+                        ori[i].value /= 1000000
                         if (once) {
-                            this.reply("导入meta.js的部分小数数据异常，原因不明，已暴力修复。保险起见建议重启后在执行#属性映射更新 。")
+                            this.reply("导入meta.js的部分小数数据异常，原因不明，已暴力修复。虽经测试暴力修复没有问题，但是保险起见建议重启后在执行#属性映射更新 。")
                             once = false
                         }
                     }
@@ -130,8 +130,10 @@ export class resUpdate extends plugin {
                     ori[i].value = Number(ori[i].value.toFixed(5))
                     let rank = i.substring(0, 1)
                     ori[ori[i].key][rank] = ori[i].value
+                    let mid = i.substring(1, 5)
+                    ori[ori[i].key][0][1] = mid
                 } catch (e) {
-                    ori[ori[i]] = [i]
+                    ori[ori[i]] = [[Number(i)]]
                 }
             }
             fs.writeFileSync(resource + "attr_map.json", JSON.stringify(ori))
