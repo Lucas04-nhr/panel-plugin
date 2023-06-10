@@ -53,21 +53,21 @@ export class resUpdate extends plugin {
         try {
             await download(GenshinDataRepoDownload, "WeaponExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
-            console.log(pluginINFO.concat(`下载完成！用时${TimeDownload - TimeStart}ms`))
+            console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStart}ms`)
 
-            let temp = resource.concat("WeaponExcelConfigData.json")
+            let temp = resource + "WeaponExcelConfigData.json"
             let ori = getJSON(temp)
             let WeaponID_To_IconName = await {}
             for (let i in ori) {
                 WeaponID_To_IconName[ori[i].id] = ori[i].icon
             }
-            fs.writeFileSync(resource.concat(`WeaponID_To_IconName.json`), JSON.stringify(WeaponID_To_IconName))
+            fs.writeFileSync(resource + "WeaponID_To_IconName.json", JSON.stringify(WeaponID_To_IconName))
             let FileSize = fs.statSync(temp).size
             fs.rmSync(temp)
             let TimeEnd = await new Date().getTime()
             this.reply(`成功更新武器图标数据~\n本次更新总计用时${TimeEnd - TimeStart}ms~\n其中下载资源花费${TimeDownload - TimeStart}ms~\n为避免空间浪费删除了非必要文件：\nWeaponExcelConfigData.json\n文件大小${(FileSize / 1024).toFixed(2)}KB`)
         } catch (e) {
-            console.log(pluginINFO.concat(e))
+            console.log(pluginINFO + e)
             let TimeEnd = await new Date().getTime()
             this.reply(`更新失败了呜呜呜，请检查后台日志确认原因。用时${TimeEnd - TimeStart}ms`)
         }
@@ -79,8 +79,8 @@ export class resUpdate extends plugin {
         try {
             await download(GenshinDataRepoDownload, "AvatarTalentExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
-            console.log(pluginINFO.concat(`下载完成！用时${TimeDownload - TimeStart}ms`))
-            let ori = getJSON(resource.concat("AvatarTalentExcelConfigData.json"))
+            console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStart}ms`)
+            let ori = getJSON(resource + "AvatarTalentExcelConfigData.json")
             //如果版本有更新，需要手动维护后续元素映射transElem。
             let Temp_PlayerElem_To_ConsIconName = { "风": [], "岩": [], "雷": [], "草": [], "水": [], "火": [], "冰": [] }
             let transElem = { "915": "风", "917": "岩", "914": "雷", "913": "草" }
@@ -89,13 +89,13 @@ export class resUpdate extends plugin {
                 let element = transElem[ori[i].mainCostItemId]
                 Temp_PlayerElem_To_ConsIconName[element].push(ori[i].icon)
             }
-            fs.writeFileSync(resource.concat("PlayerElem_To_ConsIconName.json"), JSON.stringify(Temp_PlayerElem_To_ConsIconName))
-            let FileSize = fs.statSync(resource.concat("AvatarTalentExcelConfigData.json")).size
-            fs.rmSync(resource.concat("AvatarTalentExcelConfigData.json"))
+            fs.writeFileSync(resource + "PlayerElem_To_ConsIconName.json", JSON.stringify(Temp_PlayerElem_To_ConsIconName))
+            let FileSize = fs.statSync(resource + "AvatarTalentExcelConfigData.json").size
+            fs.rmSync(resource + "AvatarTalentExcelConfigData.json")
             let TimeEnd = await new Date().getTime()
             this.reply(`成功更新主角命座图标数据~\n本次更新总计用时${TimeEnd - TimeStart}ms~\n其中下载资源花费${TimeDownload - TimeStart}ms~\n为避免空间浪费删除了非必要文件：\nAvatarTalentExcelConfigData.json\n文件大小${(FileSize / 1024).toFixed(2)}KB`)
         } catch (e) {
-            console.log(pluginINFO.concat(e))
+            console.log(pluginINFO + e)
             let TimeEnd = await new Date().getTime()
             this.reply(`更新失败了呜呜呜，请检查后台日志确认原因。用时${TimeEnd - TimeStart}ms`)
         }
@@ -126,11 +126,11 @@ export class resUpdate extends plugin {
                     ori[ori[i]] = [i]
                 }
             }
-            fs.writeFileSync(resource.concat("attr_map.json"), JSON.stringify(ori))
+            fs.writeFileSync(resource + "attr_map.json", JSON.stringify(ori))
             let TimeEnd = await new Date().getTime()
             this.reply(`成功更新属性映射数据~\n本次更新总计用时${TimeEnd - TimeStart}ms~`)
         } catch (e) {
-            console.log(pluginINFO.concat(e))
+            console.log(pluginINFO + e)
             let TimeEnd = await new Date().getTime()
             this.reply(`更新失败了呜呜呜，请检查后台日志确认原因。用时${TimeEnd - TimeStart}ms`)
         }
@@ -144,9 +144,9 @@ export class resUpdate extends plugin {
         try {
             let data_chs
             try {
-                data_chs = getJSON(MiaoResourecePath.concat("artifact/data.json"))
+                data_chs = getJSON(MiaoResourecePath + "artifact/data.json")
             } catch (emiao) {
-                console.log(pluginINFO.concat(emiao))
+                console.log(pluginINFO + emiao)
                 let TimeEnd = await new Date().getTime()
                 this.reply(`更新失败，推测原因为未正确安装喵喵插件或未正确配置本js插件。请检查后台日志确认详细原因。\n用时${TimeEnd - TimeStart}ms`)
                 return false
@@ -154,13 +154,13 @@ export class resUpdate extends plugin {
             let TimeStartDownload = await new Date().getTime()
             await download(GenshinDataRepoDownload, "ReliquaryCodexExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
-            console.log(pluginINFO.concat(`下载完成！用时${TimeDownload - TimeStartDownload}ms`))
-            let ori = getJSON(resource.concat("ReliquaryCodexExcelConfigData.json"))
+            console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStartDownload}ms`)
+            let ori = getJSON(resource + "ReliquaryCodexExcelConfigData.json")
             let capId_to_suitId = await {}
             for (let i in ori) {
                 capId_to_suitId["n" + ori[i].capId] = ori[i].suitId
             }
-            ori = fs.readFileSync(MiaoResourecePath.concat("artifact/calc.js")).toString().replaceAll(`'`, `"`).replaceAll(`Pct`, ``)
+            ori = fs.readFileSync(MiaoResourecePath + "artifact/calc.js").toString().replaceAll(`'`, `"`).replaceAll(`Pct`, ``)
             let relic = await {}
 
             let trans = {
@@ -186,7 +186,7 @@ export class resUpdate extends plugin {
                     SetEffect = JSON.parse(`[${SetEffect.substring(start)}]`)
                     if (SetEffect[0] == "shield") continue
                     if (SetEffect[0] == "dmg") {
-                        SetEffect[0] = SetEffect[2].concat("元素伤害加成")
+                        SetEffect[0] = SetEffect[2] + "元素伤害加成"
                     } else {
                         if (SetEffect[0] == "phy") {
                             SetEffect[0] = "物理伤害加成"
@@ -198,7 +198,7 @@ export class resUpdate extends plugin {
                                 if (t) {
                                     SetEffect[0] = t
                                 } else {
-                                    console.log(pluginINFO.concat(SetEffect[2]))
+                                    console.log(pluginINFO + SetEffect[2])
                                 }
                             }
                         }
@@ -208,13 +208,13 @@ export class resUpdate extends plugin {
                     relic[SetID] = SetEffect
                 }
             }
-            let FileSize = fs.statSync(resource.concat("ReliquaryCodexExcelConfigData.json")).size
-            fs.rmSync(resource.concat("ReliquaryCodexExcelConfigData.json"))
-            fs.writeFileSync(resource.concat("dataRelicSet.json"), JSON.stringify(relic))
+            let FileSize = fs.statSync(resource + "ReliquaryCodexExcelConfigData.json").size
+            fs.rmSync(resource + "ReliquaryCodexExcelConfigData.json")
+            fs.writeFileSync(resource + "dataRelicSet.json", JSON.stringify(relic))
             let TimeEnd = await new Date().getTime()
             this.reply(`成功更新圣遗物套装数据~\n本次更新总计用时${TimeEnd - TimeStart}ms~\n其中下载资源花费${TimeDownload - TimeStartDownload}ms~\n为避免空间浪费删除了非必要文件：\nReliquaryCodexExcelConfigData.json\n文件大小${(FileSize / 1024).toFixed(2)}KB`)
         } catch (e) {
-            console.log(pluginINFO.concat(e))
+            console.log(pluginINFO + e)
             let TimeEnd = await new Date().getTime()
             this.reply(`更新失败了呜呜呜，请检查后台日志确认原因。用时${TimeEnd - TimeStart}ms`)
         }
@@ -226,8 +226,8 @@ export class resUpdate extends plugin {
         try {
             await download(GenshinDataRepoDownload, "ReliquaryLevelExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
-            console.log(pluginINFO.concat(`下载完成！用时${TimeDownload - TimeStart}ms`))
-            let ori = getJSON(resource.concat("ReliquaryLevelExcelConfigData.json"))
+            console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStart}ms`)
+            let ori = getJSON(resource + "ReliquaryLevelExcelConfigData.json")
             let translate = {
                 //如有新增主属性请手动添加
                 "FIGHT_PROP_HP": "hpPlus",
@@ -269,13 +269,13 @@ export class resUpdate extends plugin {
                     result[Effect.propType][ori[i].rank][ori[i].level - 1] = Effect.value
                 }
             }
-            let FileSize = fs.statSync(resource.concat("ReliquaryLevelExcelConfigData.json")).size
-            fs.rmSync(resource.concat("ReliquaryLevelExcelConfigData.json"))
-            fs.writeFileSync(resource.concat("dataRelicMain.json"), JSON.stringify(result))
+            let FileSize = fs.statSync(resource + "ReliquaryLevelExcelConfigData.json").size
+            fs.rmSync(resource + "ReliquaryLevelExcelConfigData.json")
+            fs.writeFileSync(resource + "dataRelicMain.json", JSON.stringify(result))
             let TimeEnd = await new Date().getTime()
             this.reply(`成功更新圣遗物主词条数据~\n本次更新总计用时${TimeEnd - TimeStart}ms~\n其中下载资源花费${TimeDownload - TimeStart}ms~\n为避免空间浪费删除了非必要文件：\nReliquaryLevelExcelConfigData.json\n文件大小${(FileSize / 1024).toFixed(2)}KB`)
         } catch (e) {
-            console.log(pluginINFO.concat(e))
+            console.log(pluginINFO + e)
             let TimeEnd = await new Date().getTime()
             this.reply(`更新失败了呜呜呜，请检查后台日志确认原因。用时${TimeEnd - TimeStart}ms`)
         }

@@ -115,25 +115,25 @@ export class miaoToGspanel extends plugin {
             return false
         }
         let result = await this.M2G(uid)
-        let qq2uid = getJSON(GspanelPath.concat("../qq-uid.json"))
+        let qq2uid = getJSON(GspanelPath + "../qq-uid.json")
         qq2uid[qq] = uid
         fs.writeFileSync(await GspanelPath.concat("../qq-uid.json"), JSON.stringify(qq2uid))
         if (result == true) this.reply(`成功转换UID${uid}的面板数据~`)
         else this.reply(`转换UID${uid}的面板数据失败了orz，报错信息：\n${result}`)
     }
     async M2G(uid) {
+        //TODO：备份
         try {
             //调用前已经判断过该uid一定有面板数据，并且所有路径无误，所以接下来就是修改面板数据以适配Gspanel
             //修正面板数据，在对应目录生成文件。返回值表示处理结果(true：转换成功，其他返回值：转换失败。失败时返回报错内容以便查看日志。)
-            let Miao = getJSON(MiaoPath.concat(`${uid}.json`))
+            let Miao = getJSON(MiaoPath + uid + ".json")
             let Gspanel = { "avatars": [], "next": Math.floor(Miao._profile / 1000) }
             for (let i in Miao.avatars) {
                 //MiaoChar：喵喵面板的具体一个角色的数据
                 let MiaoChar = Miao.avatars[i]
                 //如果没有武器数据，则跳过该面板。（这个理论上应该都有啊。。不知道为啥会出现没有武器的我靠）
                 if (MiaoChar.weapon.name == undefined) {
-                    console.log(pluginINFO.concat(`UID${uid}${MiaoChar.name}没有武器信息故跳过，以下是他${MiaoChar.name}的武器信息：`))
-                    console.log(MiaoChar.weapon)
+                    console.log(pluginINFO + "UID" + uid + MiaoChar.name + `没有武器信息故跳过，以下是他${MiaoChar.name}的武器信息：\n` + MiaoChar.weapon)
                     continue
                 }
                 //如果数据来源是米游社，那根本就不会有带圣遗物的面板数据，取消执行。Miao的数据似乎有点问题，米游社来源可能误标enka，需要后期检查。
@@ -141,7 +141,7 @@ export class miaoToGspanel extends plugin {
                 //用参数NoData标记本面板是否有足量数据（具体来讲，是否有圣遗物详情）
                 let NoData = null
                 //char_Miao：喵喵的具体一个角色的资料
-                let char_Miao = getJSON(MiaoResourecePath.concat(`character/${MiaoChar.name}/data.json`))
+                let char_Miao = getJSON(MiaoResourecePath + `character/${MiaoChar.name}/data.json`)
                 //result：Gspanel面板的具体一个角色的数据
                 let result = {
                     "id": char_Miao.id,
@@ -275,7 +275,7 @@ export class miaoToGspanel extends plugin {
                 //weapon_miao：Miao具体一个武器的资料
                 let weapon_miao
                 try {
-                    weapon_miao = getJSON(MiaoResourecePath.concat(`weapon/${char_Miao.weapon}/${result.weapon.name}/data.json`))
+                    weapon_miao = getJSON(MiaoResourecePath + `weapon/${char_Miao.weapon}/${result.weapon.name}/data.json`)
                 } catch (errorWeaponData) {
                     console.log(logger.red(`${pluginINFO}UID${uid}的${result.name}使用了${result.weapon.name}，还请自行判断该角色是否可以使用该武器。如果该角色在原版游戏中可以携带该武器，请更新miao-plugin来尝试修复该问题。以下是命令执行报错：\n`) + errorWeaponData)
                     return false
@@ -314,7 +314,7 @@ export class miaoToGspanel extends plugin {
                     charPromote = { "prop": "攻击力百分比", "value": 6 * map[MiaoChar.promote] }
                 } else {
                     //char_Miao_detail：Miao具体一个角色的资料的生命、攻击、防御、突破属性。请注意，主角没有这类数据！
-                    let char_Miao_detail = getJSON(MiaoResourecePath.concat(`character/${MiaoChar.name}/detail.json`)).attr
+                    let char_Miao_detail = getJSON(MiaoResourecePath + `character/${MiaoChar.name}/detail.json`).attr
 
                     levelUP = trans.Promote[MiaoChar.promote + 1]
                     levelDN = trans.Promote[MiaoChar.promote]
@@ -453,7 +453,7 @@ export class miaoToGspanel extends plugin {
                 }
                 if (NoData) {
                     //如果没有圣遗物详细数据，则跳过该面板。
-                    console.log(pluginINFO.concat(`UID${uid}${result.name}的圣遗物没有详细数据故跳过，以下是他${result.name}的圣遗物：`))
+                    console.log(pluginINFO + "UID" + uid + result.name + `的圣遗物没有详细数据故跳过，以下是他${result.name}的圣遗物：`)
                     console.log(NoData)
                     continue
                 }
@@ -521,7 +521,7 @@ export class miaoToGspanel extends plugin {
     }
     async findUID(QQ) {
         //根据QQ号判断对应uid，返回null表示没有对应uid。
-        let uid = await redis.get(redisStart.concat(`${QQ}`))
+        let uid = await redis.get(redisStart + QQ)
         return uid
     }
 }

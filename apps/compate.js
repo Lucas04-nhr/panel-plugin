@@ -26,6 +26,7 @@ export class compate extends plugin {
         })
     }
     async compate_all() {
+        //TODO
     }
     async compate_query() {
         let uid = await this.e.msg.match(/\d+/g)
@@ -51,8 +52,13 @@ export class compate extends plugin {
         else this.reply(`调整UID${uid}的面板数据失败了orz，报错信息：\n${result}`)
 
     }
-    async compate() {
+    async compate(uid) {
+        //TODO：备份
         try {
+            let old = getJSON(MiaoPath + uid + ".json")
+
+            console.log(old.avatars[10000081])
+
             return true
         } catch (e) {
             console.log(logger.red(`${pluginINFO}UID${uid}报错：\n${e}`))
@@ -61,7 +67,7 @@ export class compate extends plugin {
     }
     async findUID(QQ) {
         //根据QQ号判断对应uid，返回null表示没有对应uid。
-        let uid = await redis.get(redisStart.concat(`${QQ}`))
+        let uid = await redis.get(redisStart + QQ)
         return uid
     }
 }
