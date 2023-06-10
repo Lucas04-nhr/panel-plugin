@@ -4,11 +4,8 @@ let { resource, MiaoPath, GspanelPath, BackupMiaoPath } = a.getConfig("path")
 let { redisStart, errorTIP, pluginINFO } = a.getConfig("info")
 let { backupMiao } = a.getConfig("settings")
 
-import fs from "fs"
-
-// let a = fs.readdirSync(BackupMiaoPath)
-// console.log(a)
-
+//attr_map:属性id到属性英文的映射
+let attr_map = a.getJSON(resource + "attr_map.json")
 
 export class compate extends plugin {
     constructor() {
@@ -59,13 +56,32 @@ export class compate extends plugin {
     }
     async compate(uid) {
         try {
-            let result = a.getJSON(MiaoPath + uid + ".json")
+            let target = MiaoPath + uid + ".json"
+            let result = a.getJSON(target)
             let old = BackupMiaoPath + uid + ".json"
             if (backupMiao && !fs.existsSync(old)) {
                 //如果没有备份且需要备份，则进行一次备份。
                 fs.writeFileSync(old, JSON.stringify(result))
             }
+            for (let i in result.avatars) {
+                for (let j in result.avatars[i].artis) {
+                    let docker = result.avatars[i].artis[j]
+                    if (docker.main) {
+                        console.log(result.avatars[i].artis[j])
+                        //如果是旧版圣遗物数据，则进行调整。
+                        //主词条
+                        docker.mainId = attr_map[docker.main.key][0]
+                        delete docker.main
+                        //TODO:副词条
 
+                        //调整完毕，赋值。
+                        result.avatars[i].artis[j] = docker
+                        console.log(result.avatars[i].artis[j])
+                    }
+                }
+            }
+            //TODO：测试完毕释放下行
+            //fs.writeFileSync(target,JSON.stringify(result))
             return true
         } catch (e) {
             console.log(logger.red(`${pluginINFO}UID${uid}报错：\n${e}`))
