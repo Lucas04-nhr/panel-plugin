@@ -110,14 +110,22 @@ export class resUpdate extends plugin {
                 ...mainIdMap,
                 ...attrIdMap
             }
-            for (let i in ori) try {
-                if (ori[i].key.search(/Plus|mastery/g) == -1) {
-                    //如果value是百分数，为了格式统一将其扩大为100倍
-                    ori[i].value = Number((Number(ori[i].value) * 100).toFixed(5))
-                } else {
-                    ori[i].value = Number((Number(ori[i].value)).toFixed(5))
+            for (let i in ori) {
+                try {
+                    ori[i].value = Number(ori[i].value)
+                    if (ori[i].value > 10000)
+                        //太大了，九成是bug了，手动修复下。
+                        ori[i].value /= 100000000
+                    if (ori[i].key.search(/Plus|mastery/g) == -1)
+                        //如果value是百分数，为了格式统一将其扩大为100倍
+                        ori[i].value *= 100
+                    ori[i].value = Number(ori[i].value.toFixed(5))
+                    let rank = i.substring(0, 1)
+                    ori[ori[i].key][rank] = ori[i].value
+                } catch (e) {
+                    ori[ori[i]] = [i]
                 }
-            } catch (e) { }
+            }
             fs.writeFileSync(resource.concat("attr_map.json"), JSON.stringify(ori))
             let TimeEnd = await new Date().getTime()
             this.reply(`成功更新属性映射数据~\n本次更新总计用时${TimeEnd - TimeStart}ms~`)
