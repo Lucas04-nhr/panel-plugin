@@ -27,7 +27,7 @@ export function supportGuoba() {
                 },
                 {
                     field: 'path.GspanelPath',
-                    label: 'gspanel位置',
+                    label: 'py面板位置',
                     bottomHelpMessage: 'nonebot-plugin-gspanel产生的面板数据路径，需要手动配置到自己安装的路径。',
                     helpMessage: '手动填写务必保证路径结尾有/，以下路径同理。',
                     component: 'Input',
@@ -42,12 +42,32 @@ export function supportGuoba() {
                 },
                 {
                     field: 'path.resource',
-                    label: '本体资源位置',
+                    label: '插件资源位置',
                     bottomHelpMessage: '该插件产生的中间文件存放的文件夹位置。download函数会默认下载文件到该位置。',
                     component: 'Input',
                     required: true,
                     componentProps: {
                         placeholder: 'resource:该插件产生的中间文件存放的文件夹位置。download函数会默认下载文件到该位置。',
+                    },
+                },
+                {
+                    field: 'path.BackupMiaoPath',
+                    label: '喵喵备份位置',
+                    bottomHelpMessage: '用于存放备份的喵喵面板数据，以减少未知问题导致面板错误带来的的影响。',
+                    component: 'Input',
+                    required: true,
+                    componentProps: {
+                        placeholder: 'BackupMiaoPath:用于存放备份的喵喵面板数据，以减少未知问题导致面板错误带来的的影响。',
+                    },
+                },
+                {
+                    field: 'path.BackupGspanelPath',
+                    label: 'py备份位置',
+                    bottomHelpMessage: '用于存放备份的nonebot-plugin-gspanel面板数据，以减少未知问题导致面板错误带来的的影响。',
+                    component: 'Input',
+                    required: true,
+                    componentProps: {
+                        placeholder: 'BackupGspanelPath:用于存放备份的nonebot-plugin-gspanel面板数据，以减少未知问题导致面板错误带来的的影响。',
                     },
                 },
                 {
