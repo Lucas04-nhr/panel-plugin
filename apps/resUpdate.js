@@ -1,7 +1,9 @@
+import a from "../model/tools.js"
+
 import YAML from 'yaml'
 
-let { resource, MiaoResourecePath, GenshinDataRepoDownload } = getJSON("plugins/panel-plugin/config/path.json")
-let { pluginINFO } = getJSON("plugins/panel-plugin/config/info.json")
+let { resource, MiaoResourecePath, GenshinDataRepoDownload } = a.getConfig("path")
+let { pluginINFO } = a.getConfig("info")
 
 
 export class resUpdate extends plugin {
@@ -51,12 +53,12 @@ export class resUpdate extends plugin {
         //数据来源：https://gitlab.com/Dimbreath/AnimeGameData/-/blob/master/ExcelBinOutput/WeaponExcelConfigData.json
         let TimeStart = await new Date().getTime()
         try {
-            await download(GenshinDataRepoDownload, "WeaponExcelConfigData.json")
+            await a.download(GenshinDataRepoDownload, "WeaponExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
             console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStart}ms`)
 
             let temp = resource + "WeaponExcelConfigData.json"
-            let ori = getJSON(temp)
+            let ori = a.getJSON(temp)
             let WeaponID_To_IconName = await {}
             for (let i in ori) {
                 WeaponID_To_IconName[ori[i].id] = ori[i].icon
@@ -77,10 +79,10 @@ export class resUpdate extends plugin {
         //数据来源：https://gitlab.com/Dimbreath/AnimeGameData/-/blob/master/ExcelBinOutput/AvatarTalentExcelConfigData.json
         let TimeStart = await new Date().getTime()
         try {
-            await download(GenshinDataRepoDownload, "AvatarTalentExcelConfigData.json")
+            await a.download(GenshinDataRepoDownload, "AvatarTalentExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
             console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStart}ms`)
-            let ori = getJSON(resource + "AvatarTalentExcelConfigData.json")
+            let ori = a.getJSON(resource + "AvatarTalentExcelConfigData.json")
             //如果版本有更新，需要手动维护后续元素映射transElem。
             let Temp_PlayerElem_To_ConsIconName = { "风": [], "岩": [], "雷": [], "草": [], "水": [], "火": [], "冰": [] }
             let transElem = { "915": "风", "917": "岩", "914": "雷", "913": "草" }
@@ -144,7 +146,7 @@ export class resUpdate extends plugin {
         try {
             let data_chs
             try {
-                data_chs = getJSON(MiaoResourecePath + "artifact/data.json")
+                data_chs = a.getJSON(MiaoResourecePath + "artifact/data.json")
             } catch (emiao) {
                 console.log(pluginINFO + emiao)
                 let TimeEnd = await new Date().getTime()
@@ -152,10 +154,10 @@ export class resUpdate extends plugin {
                 return false
             }
             let TimeStartDownload = await new Date().getTime()
-            await download(GenshinDataRepoDownload, "ReliquaryCodexExcelConfigData.json")
+            await a.download(GenshinDataRepoDownload, "ReliquaryCodexExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
             console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStartDownload}ms`)
-            let ori = getJSON(resource + "ReliquaryCodexExcelConfigData.json")
+            let ori = a.getJSON(resource + "ReliquaryCodexExcelConfigData.json")
             let capId_to_suitId = await {}
             for (let i in ori) {
                 capId_to_suitId["n" + ori[i].capId] = ori[i].suitId
@@ -224,10 +226,10 @@ export class resUpdate extends plugin {
         //数据来源：https://gitlab.com/Dimbreath/AnimeGameData/-/blob/master/ExcelBinOutput/ReliquaryLevelExcelConfigData.json
         let TimeStart = await new Date().getTime()
         try {
-            await download(GenshinDataRepoDownload, "ReliquaryLevelExcelConfigData.json")
+            await a.download(GenshinDataRepoDownload, "ReliquaryLevelExcelConfigData.json")
             let TimeDownload = await new Date().getTime()
             console.log(pluginINFO + `下载完成！用时${TimeDownload - TimeStart}ms`)
-            let ori = getJSON(resource + "ReliquaryLevelExcelConfigData.json")
+            let ori = a.getJSON(resource + "ReliquaryLevelExcelConfigData.json")
             let translate = {
                 //如有新增主属性请手动添加
                 "FIGHT_PROP_HP": "hpPlus",
@@ -311,21 +313,9 @@ export class resUpdate extends plugin {
         result += "/gspanel/cache/"
 
         let path_path = "plugins/panel-plugin/config/path.json"
-        let cfg = getJSON(path_path)
+        let cfg = a.getJSON(path_path)
         cfg.GspanelPath = result
         fs.writeFileSync(path_path, JSON.stringify(cfg))
         this.reply(`成功根据你的py-plugin配置设置了正确的gspanel路径：\n${result}`)
     }
-}
-async function download(url, filename) {
-    //下载必要资源到resource文件夹
-    let response = url + filename
-    response = await fetch(response)
-    response = await response.text()
-    fs.writeFileSync(resource + filename, response)
-}
-
-function getJSON(url) {
-    //获取指定绝对路径的json
-    return JSON.parse(fs.readFileSync(url))
 }

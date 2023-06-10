@@ -1,8 +1,13 @@
-let { resource, MiaoPath, GspanelPath, BackupMiaoPath } = getJSON("plugins/panel-plugin/config/path.json")
-let { redisStart, errorTIP, pluginINFO } = getJSON("plugins/panel-plugin/config/info.json")
+import a from "../model/tools.js"
 
-let a = fs.readdirSync(BackupMiaoPath)
-console.log(a)
+let { resource, MiaoPath, GspanelPath, BackupMiaoPath } = a.getConfig("path")
+let { redisStart, errorTIP, pluginINFO } = a.getConfig("info")
+let { backupMiao } = a.getConfig("settings")
+
+import fs from "fs"
+
+// let a = fs.readdirSync(BackupMiaoPath)
+// console.log(a)
 
 
 export class compate extends plugin {
@@ -53,11 +58,13 @@ export class compate extends plugin {
 
     }
     async compate(uid) {
-        //TODO：备份
         try {
-            let old = getJSON(MiaoPath + uid + ".json")
-
-            console.log(old.avatars[10000081])
+            let result = a.getJSON(MiaoPath + uid + ".json")
+            let old = BackupMiaoPath + uid + ".json"
+            if (backupMiao && !fs.existsSync(old)) {
+                //如果没有备份且需要备份，则进行一次备份。
+                fs.writeFileSync(old, JSON.stringify(result))
+            }
 
             return true
         } catch (e) {
@@ -71,7 +78,12 @@ export class compate extends plugin {
         return uid
     }
 }
-function getJSON(url) {
-    //获取指定绝对路径的json
-    return JSON.parse(fs.readFileSync(url))
-}
+// function getJSON(url) {
+//     //获取指定绝对路径的json
+//     return JSON.parse(fs.readFileSync(url))
+// }
+
+// function getConfig(name) {
+//     //获取config
+//     return getJSON(`plugins/panel-plugin/config/${name}.json`)
+// }

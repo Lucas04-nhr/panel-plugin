@@ -1,5 +1,7 @@
-let { resource, MiaoPath, GspanelPath, MiaoResourecePath } = getJSON("plugins/panel-plugin/config/path.json")
-let { redisStart, errorTIP, pluginINFO } = getJSON("plugins/panel-plugin/config/info.json")
+import a from "../model/tools.js"
+
+let { resource, MiaoPath, GspanelPath, MiaoResourecePath } = a.getJSON("plugins/panel-plugin/config/path.json")
+let { redisStart, errorTIP, pluginINFO } = a.getJSON("plugins/panel-plugin/config/info.json")
 
 // console.log(MiaoResourecePath.toString())
 if (!fs.existsSync(GspanelPath)) {
@@ -7,17 +9,17 @@ if (!fs.existsSync(GspanelPath)) {
 }
 
 //char_data_Gspanel:Gspanel面板的所有角色的资料
-let char_data_Gspanel = getJSON(GspanelPath + "../char-data.json")
+let char_data_Gspanel = a.getJSON(GspanelPath + "../char-data.json")
 //WeaponID_To_IconName:武器ID到图标名称的映射
-let WeaponID_To_IconName = getJSON(resource + "WeaponID_To_IconName.json")
+let WeaponID_To_IconName = a.getJSON(resource + "WeaponID_To_IconName.json")
 //PlayerElem_To_ConsIconName:旅行者元素到命座图标的映射
-let PlayerElem_To_ConsIconName = getJSON(resource + "PlayerElem_To_ConsIconName.json")
+let PlayerElem_To_ConsIconName = a.getJSON(resource + "PlayerElem_To_ConsIconName.json")
 //attr_map:属性id到属性英文的映射
-let attr_map = getJSON(resource + "attr_map.json")
+let attr_map = a.getJSON(resource + "attr_map.json")
 //dataRelicSet:圣遗物名称→套装名称 套装名称→套装id 套装id→套装效果
-let dataRelicSet = getJSON(resource + "dataRelicSet.json")
+let dataRelicSet = a.getJSON(resource + "dataRelicSet.json")
 //dataRelicMain:圣遗物主词条→[星级→[等级→数值]]
-let dataRelicMain = getJSON(resource + "dataRelicMain.json")
+let dataRelicMain = a.getJSON(resource + "dataRelicMain.json")
 //部分没必要更新的数据，直接写在这里拿来用了。transElement和trans。
 let transElement = {
     "pyro": "火", "hydro": "水", "cryo": "冰", "electro": "雷", "anemo": "风", "geo": "岩", "dendro": "草",
@@ -58,7 +60,7 @@ export class miaoToGspanel extends plugin {
         }
         let TimeStart = new Date().getTime()
         let KEYtoUID = await redis.keys(redisStart + "*")
-        let qq2uid = getJSON(GspanelPath + "../qq-uid.json")
+        let qq2uid = a.getJSON(GspanelPath + "../qq-uid.json")
         let ErrorList = []
         let succeed = 0
         let fail = 0
@@ -115,18 +117,18 @@ export class miaoToGspanel extends plugin {
             return false
         }
         let result = await this.M2G(uid)
-        let qq2uid = getJSON(GspanelPath + "../qq-uid.json")
+        let qq2uid = a.getJSON(GspanelPath + "../qq-uid.json")
         qq2uid[qq] = uid
         fs.writeFileSync(await GspanelPath.concat("../qq-uid.json"), JSON.stringify(qq2uid))
         if (result == true) this.reply(`成功转换UID${uid}的面板数据~`)
         else this.reply(`转换UID${uid}的面板数据失败了orz，报错信息：\n${result}`)
     }
     async M2G(uid) {
-        //TODO：备份
         try {
             //调用前已经判断过该uid一定有面板数据，并且所有路径无误，所以接下来就是修改面板数据以适配Gspanel
             //修正面板数据，在对应目录生成文件。返回值表示处理结果(true：转换成功，其他返回值：转换失败。失败时返回报错内容以便查看日志。)
-            let Miao = getJSON(MiaoPath + uid + ".json")
+            let Miao = a.getJSON(MiaoPath + uid + ".json")
+            //TODO：备份
             let Gspanel = { "avatars": [], "next": Math.floor(Miao._profile / 1000) }
             for (let i in Miao.avatars) {
                 //MiaoChar：喵喵面板的具体一个角色的数据
@@ -141,7 +143,7 @@ export class miaoToGspanel extends plugin {
                 //用参数NoData标记本面板是否有足量数据（具体来讲，是否有圣遗物详情）
                 let NoData = null
                 //char_Miao：喵喵的具体一个角色的资料
-                let char_Miao = getJSON(MiaoResourecePath + `character/${MiaoChar.name}/data.json`)
+                let char_Miao = a.getJSON(MiaoResourecePath + `character/${MiaoChar.name}/data.json`)
                 //result：Gspanel面板的具体一个角色的数据
                 let result = {
                     "id": char_Miao.id,
@@ -275,7 +277,7 @@ export class miaoToGspanel extends plugin {
                 //weapon_miao：Miao具体一个武器的资料
                 let weapon_miao
                 try {
-                    weapon_miao = getJSON(MiaoResourecePath + `weapon/${char_Miao.weapon}/${result.weapon.name}/data.json`)
+                    weapon_miao = a.getJSON(MiaoResourecePath + `weapon/${char_Miao.weapon}/${result.weapon.name}/data.json`)
                 } catch (errorWeaponData) {
                     console.log(logger.red(`${pluginINFO}UID${uid}的${result.name}使用了${result.weapon.name}，还请自行判断该角色是否可以使用该武器。如果该角色在原版游戏中可以携带该武器，请更新miao-plugin来尝试修复该问题。以下是命令执行报错：\n`) + errorWeaponData)
                     return false
@@ -314,7 +316,7 @@ export class miaoToGspanel extends plugin {
                     charPromote = { "prop": "攻击力百分比", "value": 6 * map[MiaoChar.promote] }
                 } else {
                     //char_Miao_detail：Miao具体一个角色的资料的生命、攻击、防御、突破属性。请注意，主角没有这类数据！
-                    let char_Miao_detail = getJSON(MiaoResourecePath + `character/${MiaoChar.name}/detail.json`).attr
+                    let char_Miao_detail = a.getJSON(MiaoResourecePath + `character/${MiaoChar.name}/detail.json`).attr
 
                     levelUP = trans.Promote[MiaoChar.promote + 1]
                     levelDN = trans.Promote[MiaoChar.promote]
@@ -524,9 +526,4 @@ export class miaoToGspanel extends plugin {
         let uid = await redis.get(redisStart + QQ)
         return uid
     }
-}
-
-function getJSON(url) {
-    //获取指定绝对路径的json
-    return JSON.parse(fs.readFileSync(url))
 }
