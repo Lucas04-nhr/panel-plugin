@@ -97,6 +97,7 @@ export class compate extends plugin {
                         docker.mainId = attr_map[docker.main.key][0][0]
                         //TODO:再处理副词条
                         let list = []
+                        let error = undefined
                         if (docker.star > 2) {
                             //一般都是四挡，除非3星都不到。
                             for (let k in docker.attrs) {
@@ -104,21 +105,43 @@ export class compate extends plugin {
                                 if (!key) break;
                                 //该词条非空，可以录入attrIds
                                 value = Number((value / attr_map[key][docker.star]).toFixed(1))
+                                if (value < 0.7 || value == 1.1 || value == 1.2 || value == 1.3) {
+                                    error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}。如果是，请提交issue。`
+                                    break
+                                }
                                 key = docker.star + attr_map[key][0][1]
                                 if (value % 1) {
                                     //如果不是整数档位，则需要判断有几个词条是合理的。
                                     //TODO：非整数档位
-                                    console.log("\n\n123456")
+                                    let time = 7
+                                    //强化全中一个词条也就5次，带初始6次。
+                                    while (--time) {
+                                        let avg = value / time
+                                        if (avg > 1) {
+                                            //不可能出现avg>1，除非：
+                                            //1.代码编写/运行错误
+                                            //2.面板文件是经过修改的，且修改出了理论上不存在的词条数
+                                            let { key, value } = docker.attrs[k]
+                                            let omg = await `出现了一个理论不存在的副词条：${key}:${value}，理论最高值为${attr_map[key][docker.star] * 6}。`
+                                            throw omg
+                                        }
+                                        if (avg >= 0.7)
+                                            break
+                                    }
+                                    console.log({ time, value })
                                 } else {
                                     //如果正好是整数档位
-                                    while (value--) {
+                                    while (value--)
                                         list.push(key + "4")
-                                    }
                                 }
                                 // console.log({ key, value })
                             }
                         } else {
                             //TODO:二三档圣遗物([0.8,1.0],[0.7,0.85,1.0])
+                        }
+                        if (error) {
+                            console.log(pluginINFO + error)
+                            break
                         }
                         docker.attrIds = list
                         //最后删除旧的主副词条
@@ -134,7 +157,7 @@ export class compate extends plugin {
             //fs.writeFileSync(target,JSON.stringify(result))
             return true
         } catch (e) {
-            console.log(logger.red(`${pluginINFO}UID${uid}报错：\n${e}`))
+            console.log(logger.red(pluginINFO + `UID${uid}报错：\n` + e))
             return `\n${pluginINFO}在处理UID${uid}的数据时：\n${logger.red(e)}`
         }
     }
