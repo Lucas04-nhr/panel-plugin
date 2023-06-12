@@ -1,6 +1,13 @@
 import a from "../model/tools.js"
+import fs from "fs"
 
 let { MiaoPath, GspanelPath, BackupMiaoPath, BackupGspanelPath } = a.getConfig("path")
+let miao = [BackupMiaoPath, MiaoPath]
+let py = [BackupGspanelPath, GspanelPath]
+let isPy = "(p|P)(y|Y)|(G|g)spanel"
+let match = `(喵喵|miao|${isPy})?(面板|备份)+`
+let all = "(全部|所有|all)"
+let clean = "(删除|清空|erase)"
 
 export class backup extends plugin {
     constructor() {
@@ -9,23 +16,64 @@ export class backup extends plugin {
             event: 'message',
             priority: -233,
             rule: [
+                //暂处测试阶段，建议不要使用此处命令。
                 {
-                    reg: '^#?恢复(喵喵|miao|(p|P)(y|Y)|(G|g)spanel)?(面板|备份)+$',
-                    fnc: 'recover_query',
-                    permission: 'master'
-                },
-                {
-                    reg: '^#?恢复(全部|所有|all)(喵喵|miao|(p|P)(y|Y)|(G|g)spanel)?(面板|备份)+$',
-                    fnc: 'recover_all',
-                    permission: 'master'
+                    reg: `^#?(${clean}|恢复|备份)${all}?${match}$`,
+                    fnc: 'do_backup',
                 },
             ]
         })
     }
-    async recover_query() {
+    async do_backup(e) {
+        //1.确定路径
+        let say = this.e.msg
+        let path = miao
+        if (say.match(isPy)) {
+            path = py
+        }
+        //2.确定操作
+        let method = this.copy
+        if (say.match(clean))
+            method = this.erase
+        else if (!say.match("恢复")) {
+            path = [path[1], path[0]]
+        }
+        //3.判断操作范围并执行
+        if (say.match(all)) {
+            //如果请求对所有内容进行操作，那就需要判断请求者是不是bot主人。
+            if (this.e.isMaster) {
+                //对全部内容进行操作
+                let list = fs.readdirSync(path[0])
+                for (let i in list) {
+                    method(list[i], path)
+                }
+                this.reply("我滴任务！完成啦！")
+            } else
+                this.reply("但是我拒绝！")
+        } else {
+            //如果请求对单个内容进行操作，那就需要判断请求者的UID。
+            let uid = 114514191
+            //TODO:uid
+            let filename = uid + ".json"
+            if (fs.existsSync(path[0] + filename))
+                method(filename, path)
+            else
+                this.reply(`本地没有找到UID${uid}的${say.match("恢复|" + clean) ? "备份" : ""}面板数据捏，如果不是你的uid就重新绑定一下哟。`)
+        }
     }
 
-
-    async recover_all() {
+    async erase(uid_json, [at]) {
+        //TODO
+        console.log("yes")
+        console.log(ori_path)
     }
+
+    async copy(uid_json, [from, to]) {
+        //TODO
+        let file = JSON.stringify(a.getJSON(from + uid_json))
+        // console.log(file)
+        
+
+    }
+
 }
