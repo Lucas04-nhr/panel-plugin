@@ -532,9 +532,4 @@ export class miaoToGspanel extends plugin {
         //根据对应关系f[x][index]和自变量x1、x2，线性计算f在二者之间的x对应的值，并返回二位小数。如果有index则f需要加上。
         return Number((((f[x_up][index] - f[x_dn + "+"][index]) * x - f[x_up][index] * x_dn + f[x_dn + "+"][index] * x_up) / (x_up - x_dn)).toFixed(2))
     }
-    // async findUID(QQ) {
-    //     //根据QQ号判断对应uid，返回null表示没有对应uid。
-    //     let uid = await redis.get(redisStart + QQ)
-    //     return uid
-    // }
 }

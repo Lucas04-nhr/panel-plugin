@@ -161,9 +161,4 @@ export class compate extends plugin {
             return `\n${pluginINFO}在处理UID${uid}的数据时：\n${logger.red(e)}`
         }
     }
-    // async findUID(QQ) {
-    //     //根据QQ号判断对应uid，返回null表示没有对应uid。
-    //     let uid = await redis.get(redisStart + QQ)
-    //     return uid
-    // }
 }
