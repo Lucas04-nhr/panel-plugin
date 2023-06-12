@@ -2,6 +2,8 @@ import a from "../model/tools.js"
 import fs from "fs"
 
 let { MiaoPath, GspanelPath, BackupMiaoPath, BackupGspanelPath } = a.getConfig("path")
+let { pluginINFO } = a.getConfig("info")
+
 let miao = [BackupMiaoPath, MiaoPath]
 let py = [BackupGspanelPath, GspanelPath]
 let isPy = "(p|P)(y|Y)|(G|g)spanel"
@@ -33,10 +35,25 @@ export class backup extends plugin {
         }
         //2.确定操作
         let method = this.copy
-        if (say.match(clean))
+        let warning = false
+        if (say.match(clean)) {
             method = this.erase
+            if (!say.match("备份")) {
+                //尝试删除非备份的面板数据，需要警告确认
+                warning = "你正在尝试删除本地面板数据\n如果你很清楚你在做什么请回复“是”继续，回复其他任何内容取消。"
+                path = [path[1], path[0]]
+            }
+        }
         else if (!say.match("恢复")) {
             path = [path[1], path[0]]
+        }
+
+        if (warning) {
+            this.reply(warning)
+            let will = this.setContext('ask')
+            console.log(will)
+            if (!will) return false
+            console.log("我超")
         }
         //3.判断操作范围并执行
         if (say.match(all)) {
@@ -44,15 +61,18 @@ export class backup extends plugin {
             if (this.e.isMaster) {
                 //对全部内容进行操作
                 let list = fs.readdirSync(path[0])
+                let start = await new Date().getTime()
                 for (let i in list) {
                     method(list[i], path)
+                    if (!(i % 20)) console.log(`${pluginINFO}当前进度：${i}/${list.length}，用时${(await new Date().getTime() - start) / 1000}s`)
                 }
                 this.reply("我滴任务！完成啦！")
             } else
                 this.reply("但是我拒绝！")
         } else {
             //如果请求对单个内容进行操作，那就需要判断请求者的UID。
-            let uid = 114514191
+            let qq = await this.e.user_id
+            let uid = await a.findUID(qq)
             //TODO:uid
             let filename = uid + ".json"
             if (fs.existsSync(path[0] + filename))
@@ -62,6 +82,21 @@ export class backup extends plugin {
         }
     }
 
+    async ask() {
+        if (/^是$/.test(this.e.msg)) {
+            console.log("寄")
+            return true
+        }
+        this.reply("好的喵，已取消操作。")
+        this.finish('ask')
+
+        return false
+    }
+
+    async do_it() {
+
+    }
+
     async erase(uid_json, [at]) {
         //TODO
         console.log("yes")
@@ -69,11 +104,8 @@ export class backup extends plugin {
     }
 
     async copy(uid_json, [from, to]) {
-        //TODO
         let file = JSON.stringify(a.getJSON(from + uid_json))
-        // console.log(file)
-        
-
+        fs.writeFileSync(to + uid_json, file)
     }
 
 }
