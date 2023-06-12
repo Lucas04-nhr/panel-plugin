@@ -26,6 +26,18 @@ export function supportGuoba() {
                     label: '正确安装的前提下，可以直接发送#面板路径更新 来获取Gspanel面板位置，无需手动填写。',
                 },
                 {
+                    field: 'settings.backupGspanel',
+                    label: 'py备份开关',
+                    bottomHelpMessage: '是否要在转换面板时备份Gspanel面板',
+                    component: 'Switch',
+                },
+                {
+                    field: 'settings.backupMiao',
+                    label: '喵喵备份开关',
+                    bottomHelpMessage: '是否要在兼容面板时备份喵喵面板',
+                    component: 'Switch',
+                },
+                {
                     field: 'path.GspanelPath',
                     label: 'py面板位置',
                     bottomHelpMessage: 'nonebot-plugin-gspanel产生的面板数据路径，需要手动配置到自己安装的路径。',

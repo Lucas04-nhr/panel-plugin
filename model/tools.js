@@ -1,5 +1,5 @@
 let { resource } = getConfig("path")
-
+let { redisStart } = getConfig("info")
 function getJSON(url) {
     //获取指定绝对路径的json
     return JSON.parse(fs.readFileSync(url))
@@ -17,8 +17,12 @@ async function download(url, filename) {
     response = await response.text()
     fs.writeFileSync(resource + filename, response)
 }
-
+async function findUID(QQ) {
+    //根据QQ号判断对应uid，返回null表示没有对应uid。
+    let uid = await redis.get(redisStart + QQ)
+    return uid
+}
 
 export default {
-    getJSON, getConfig, download
+    getJSON, getConfig, download, findUID
 }

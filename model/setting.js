@@ -1,7 +1,6 @@
 //不清楚适配锅巴需求的代码结构，项目页翻烂了也没看到文档，所以直接照抄的别人的setting.js。我看大伙的setting.js都差不多，应该没啥问题。
 
 import chokidar from 'chokidar'
-import fs from 'node:fs'
 const _path = process.cwd().replace(/\\/g, '/')
 class Setting {
     constructor() {

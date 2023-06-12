@@ -35,7 +35,7 @@ export class compate extends plugin {
         let qq = await this.e.user_id
         if (!uid) {
             //如果uid为空，即未输入uid。根据发言人QQ判断其uid，查找失败提示。
-            uid = await this.findUID(qq)
+            uid = await a.findUID(qq)
             if (!uid) {
                 //如果uid为空，即redis没有绑定数据
                 this.reply("哎呀！你好像没有绑定原神uid呢！发送“#绑定123456789”来绑定你的原神uid！")
@@ -161,9 +161,9 @@ export class compate extends plugin {
             return `\n${pluginINFO}在处理UID${uid}的数据时：\n${logger.red(e)}`
         }
     }
-    async findUID(QQ) {
-        //根据QQ号判断对应uid，返回null表示没有对应uid。
-        let uid = await redis.get(redisStart + QQ)
-        return uid
-    }
+    // async findUID(QQ) {
+    //     //根据QQ号判断对应uid，返回null表示没有对应uid。
+    //     let uid = await redis.get(redisStart + QQ)
+    //     return uid
+    // }
 }
