@@ -22,10 +22,6 @@ export function supportGuoba() {
         configInfo: {
             schemas: [
                 {
-                    component: 'Divider',
-                    label: '正确安装的前提下，可以直接发送#面板路径更新 来获取Gspanel面板位置，无需手动填写。',
-                },
-                {
                     field: 'settings.backupGspanel',
                     label: 'py备份开关',
                     bottomHelpMessage: '是否要在转换面板时备份Gspanel面板',
@@ -36,6 +32,10 @@ export function supportGuoba() {
                     label: '喵喵备份开关',
                     bottomHelpMessage: '是否要在兼容面板时备份喵喵面板',
                     component: 'Switch',
+                },
+                {
+                    component: 'Divider',
+                    label: '正确安装的前提下，可以直接发送#面板路径更新 来获取Gspanel面板位置，无需手动填写。',
                 },
                 {
                     field: 'path.GspanelPath',
