@@ -31,7 +31,7 @@ export class git_push extends plugin {
             return false
         }
 
-        
+
         let intro = `cd plugins/panel-plugin && `
         let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
 
@@ -50,7 +50,9 @@ export class git_push extends plugin {
 
         result = await execSync(cmd)
 
-        logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
+        result = `${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`
+        logger.mark(result)
+        this.reply(result)
 
 
     }
