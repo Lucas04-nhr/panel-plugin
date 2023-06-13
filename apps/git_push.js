@@ -2,11 +2,7 @@
 
 import a from "../model/tools.js"
 
-let name, email, password
-({ name, email, password } = a.getConfig("git"))
 
-let intro = `cd plugins/panel-plugin && `
-let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
 
 
 export class git_push extends plugin {
@@ -27,6 +23,18 @@ export class git_push extends plugin {
 
 
     async git_push() {
+        let name, email, password
+        try {
+            ({ name, email, password } = a.getConfig("git"))
+        } catch (e) {
+            this.reply("芝士作者上传插件用的指令喵，你没必要用喵")
+            return false
+        }
+
+        
+        let intro = `cd plugins/panel-plugin && `
+        let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
+
         let commit = this.e.msg.replace(/#?上传插件/g, "")
         if (!commit) {
             this.reply("需要commit信息")
@@ -35,17 +43,14 @@ export class git_push extends plugin {
         let result
         let cmd
         cmd = intro + git + `git add . && git commit -m "${commit}"`
-        console.log(logger.red(cmd))
 
         result = await execSync(cmd)
 
-        // logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
         cmd = intro + `git push`
-        console.log(logger.red(cmd))
 
         result = await execSync(cmd)
 
-        // logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
+        logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
 
 
     }
