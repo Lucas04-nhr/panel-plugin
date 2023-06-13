@@ -50,9 +50,8 @@ export class git_push extends plugin {
 
         result = await execSync(cmd)
 
-        result = `${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`
-        logger.mark(result)
-        this.reply(result)
+        logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
+        this.reply(result.stderr.trim())
 
 
     }
