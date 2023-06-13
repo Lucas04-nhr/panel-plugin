@@ -80,10 +80,20 @@ export class compate extends plugin {
                         let error = undefined
                         if (docker.star > 2) {
                             //一般都是四挡，除非3星都不到。
+                            let list = []
+                            //list用于记录副词条分布。元素格式：[key,value,dn,more]
+                            //key:attrId只差最后一位
+                            //value:具体多少词条(1.0档位)
+                            //dn:至少几个词条
+                            //more:还能多几个词条
                             for (let k in docker.attrs) {
                                 let { key, value } = docker.attrs[k]
-                                if (!key) break;
-                                //该词条非空，可以录入attrIds
+                                if (!key) {
+                                    //没内容填空
+                                    list.push([0, 0, 0, 0])
+                                    continue;
+                                }
+                                //该词条非空，可以录入该词条非空，可以录入attrIds
                                 value = Number((value / attr_map[key][docker.star]).toFixed(1))
                                 if (!value) continue
                                 key = docker.star + attr_map[key][0][1]
@@ -92,14 +102,14 @@ export class compate extends plugin {
                                 //最低不会比词条数还低
                                 let up = Math.floor(value / 0.7)
                                 //最高不会比词条数/0.7还高
-                                if (dn > up) {
+                                if (up > 6 || up < dn) {
                                     error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}星圣遗物。如果是，请提交issue。`
                                     break
                                 }
-                                // console.log([value, dn, up])
-
-                                // console.log({ key, value })
+                                list.push([key, value, dn, up - dn])
                             }
+                            if (list[3][1] == 0) console.log(list)
+
                         } else {
                             //TODO:二三档圣遗物([0.8,1.0],[0.7,0.85,1.0])
                         }
