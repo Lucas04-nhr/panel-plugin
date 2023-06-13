@@ -31,7 +31,8 @@ export class git_push extends plugin {
         }
         let result
         let cmd
-        cmd = intro + `git add . && git commit -m "${commit}"`
+        // cmd = intro + `git add . && git commit -m "${commit}"`
+        cmd = "git config -l"
         console.log(logger.red(cmd))
         result = await execSync(cmd)
         logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
