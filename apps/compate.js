@@ -1,9 +1,10 @@
 import a from "../model/tools.js"
 
-let { resource, MiaoPath, GspanelPath, BackupMiaoPath } = a.getConfig("path")
+let { resource, MiaoPath, BackupMiaoPath } = a.getConfig("path")
 let { redisStart, errorTIP, pluginINFO } = a.getConfig("info")
 let { backupMiao } = a.getConfig("settings")
 
+import fs from "fs"
 //attr_map:属性id到属性英文的映射
 let attr_map = a.getJSON(resource + "attr_map.json")
 
@@ -21,14 +22,17 @@ export class compate extends plugin {
                 },
                 {
                     reg: '^#?(兼容|调整)旧?(喵喵)?面(板|包)(\\d{9})?$',
-                    fnc: 'compate_query',
-                    permission: 'master'
+                    fnc: 'compate_query'
                 },
             ]
         })
     }
     async compate_all() {
-        //TODO
+        //TODO:统计
+        let list = fs.readdirSync(MiaoPath)
+        for (let i in list) {
+            this.compate(list[i].replace(".json", ""))
+        }
     }
     async compate_query() {
         let uid = await this.e.msg.match(/\d+/g)
@@ -64,32 +68,8 @@ export class compate extends plugin {
                 fs.writeFileSync(old, JSON.stringify(result))
             }
             for (let i in result.avatars) {
-                let docker = {
-                    "level": 1,
-                    "star": 5,
-                    "name": "教官的羽饰",
-                    "main": {
-                        "key": "atkPlus",
-                        "value": 42
-                    },
-                    "attrs": [
-                        {
-                            "key": "mastery",
-                            "value": 15
-                        },
-                        {
-                            "key": "cpct",
-                            "value": 2.2
-                        },
-                        {
-                            "key": "defPlus",
-                            "value": 15
-                        },
-                        {}
-                    ]
-                }
                 for (let j in result.avatars[i].artis) {
-                    docker = result.avatars[i].artis[j]
+                    let docker = result.avatars[i].artis[j]
                     if (docker.main) {
                         // console.log(result.avatars[i].artis[j])
                         //如果是旧版圣遗物数据，则进行调整。
@@ -105,30 +85,19 @@ export class compate extends plugin {
                                 if (!key) break;
                                 //该词条非空，可以录入attrIds
                                 value = Number((value / attr_map[key][docker.star]).toFixed(1))
-                                if (value < 0.7 || value == 1.1 || value == 1.2 || value == 1.3) {
-                                    error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}。如果是，请提交issue。`
-                                    break
-                                }
                                 key = docker.star + attr_map[key][0][1]
                                 if (value % 1) {
                                     //如果不是整数档位，则需要判断有几个词条是合理的。
                                     //TODO：非整数档位
-                                    let time = 7
-                                    //强化全中一个词条也就5次，带初始6次。
-                                    while (--time) {
-                                        let avg = value / time
-                                        if (avg > 1) {
-                                            //不可能出现avg>1，除非：
-                                            //1.代码编写/运行错误
-                                            //2.面板文件是经过修改的，且修改出了理论上不存在的词条数
-                                            let { key, value } = docker.attrs[k]
-                                            let omg = await `出现了一个理论不存在的副词条：${key}:${value}，理论最高值为${attr_map[key][docker.star] * 6}。`
-                                            throw omg
-                                        }
-                                        if (avg >= 0.7)
-                                            break
+                                    let dn = Math.ceil(value)
+                                    //最低不会比词条数还低
+                                    let up = Math.floor(value / 0.7)
+                                    //最高不会比词条数/0.7还高
+                                    if (dn > up) {
+                                        error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}。如果是，请提交issue。`
+                                        break
                                     }
-                                    console.log({ time, value })
+                                    console.log([value, dn, up])
                                 } else {
                                     //如果正好是整数档位
                                     while (value--)
