@@ -47,6 +47,10 @@ export function supportGuoba() {
                     componentProps: {
                         placeholder: 'GspanelPath：nonebot-plugin-gspanel产生的面板数据路径，需要手动配置到自己安装的路径。',
                     },
+                    rules: [
+                        { pattern: '^.*cache.*$', message: '请定位到有gspanel面板的位置' },
+                        { pattern: '^.*/$', message: '请确保路径结尾有/' },
+                    ],
                 },
                 {
                     component: 'Divider',
@@ -61,6 +65,9 @@ export function supportGuoba() {
                     componentProps: {
                         placeholder: 'resource:该插件产生的中间文件存放的文件夹位置。download函数会默认下载文件到该位置。',
                     },
+                    rules: [
+                        { pattern: '^.*/$', message: '请确保路径结尾有/' },
+                    ],
                 },
                 {
                     field: 'path.BackupMiaoPath',
@@ -71,6 +78,9 @@ export function supportGuoba() {
                     componentProps: {
                         placeholder: 'BackupMiaoPath:用于存放备份的喵喵面板数据，以减少未知问题导致面板错误带来的的影响。',
                     },
+                    rules: [
+                        { pattern: '^.*/$', message: '请确保路径结尾有/' },
+                    ],
                 },
                 {
                     field: 'path.BackupGspanelPath',
@@ -81,6 +91,9 @@ export function supportGuoba() {
                     componentProps: {
                         placeholder: 'BackupGspanelPath:用于存放备份的nonebot-plugin-gspanel面板数据，以减少未知问题导致面板错误带来的的影响。',
                     },
+                    rules: [
+                        { pattern: '^.*/$', message: '请确保路径结尾有/' },
+                    ],
                 },
                 {
                     field: 'path.MiaoPath',
@@ -91,6 +104,9 @@ export function supportGuoba() {
                     componentProps: {
                         placeholder: 'MiaoPath：miao-plugin产生的面板数据路径。',
                     },
+                    rules: [
+                        { pattern: '^.*/$', message: '请确保路径结尾有/' },
+                    ],
                 },
                 {
                     field: 'path.MiaoResourecePath',
@@ -101,6 +117,9 @@ export function supportGuoba() {
                     componentProps: {
                         placeholder: 'MiaoResourecePath：miao-plugin安装位置下对应的资料数据存放路径。',
                     },
+                    rules: [
+                        { pattern: '^.*/$', message: '请确保路径结尾有/' },
+                    ],
                 },
                 {
                     field: 'path.GenshinDataRepoDownload',

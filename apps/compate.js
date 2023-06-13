@@ -85,24 +85,19 @@ export class compate extends plugin {
                                 if (!key) break;
                                 //该词条非空，可以录入attrIds
                                 value = Number((value / attr_map[key][docker.star]).toFixed(1))
+                                if (!value) continue
                                 key = docker.star + attr_map[key][0][1]
-                                if (value % 1) {
-                                    //如果不是整数档位，则需要判断有几个词条是合理的。
-                                    //TODO：非整数档位
-                                    let dn = Math.ceil(value)
-                                    //最低不会比词条数还低
-                                    let up = Math.floor(value / 0.7)
-                                    //最高不会比词条数/0.7还高
-                                    if (dn > up) {
-                                        error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}。如果是，请提交issue。`
-                                        break
-                                    }
-                                    console.log([value, dn, up])
-                                } else {
-                                    //如果正好是整数档位
-                                    while (value--)
-                                        list.push(key + "4")
+                                //TODO：判断有几个词条是合理的。
+                                let dn = Math.ceil(value)
+                                //最低不会比词条数还低
+                                let up = Math.floor(value / 0.7)
+                                //最高不会比词条数/0.7还高
+                                if (dn > up) {
+                                    error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}星圣遗物。如果是，请提交issue。`
+                                    break
                                 }
+                                // console.log([value, dn, up])
+
                                 // console.log({ key, value })
                             }
                         } else {
