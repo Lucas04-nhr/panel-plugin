@@ -3,7 +3,8 @@ import a from "../model/tools.js"
 
 let { name, email, password } = a.getConfig("git")
 
-let intro = `cd plugins/panel-plugin && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
+let intro = `cd plugins/panel-plugin && `
+let git = `git config --global credential.helper store && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
 
 
 export class git_push extends plugin {
@@ -32,13 +33,12 @@ export class git_push extends plugin {
         let result
         let cmd
         cmd = intro + `git add . && git commit -m "${commit}"`
-        // cmd = "git config -l"
         console.log(logger.red(cmd))
 
         result = await execSync(cmd)
 
         logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
-        cmd = intro + `git push`
+        cmd = intro + `git config --list --global        `
         console.log(logger.red(cmd))
 
         result = await execSync(cmd)
