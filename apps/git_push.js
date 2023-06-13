@@ -38,7 +38,7 @@ export class git_push extends plugin {
         result = await execSync(cmd)
 
         logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
-        cmd = intro + `git config --list --global        `
+        // cmd = intro + `git config --list --global        `
         cmd = intro + `git push`
         console.log(logger.red(cmd))
 
