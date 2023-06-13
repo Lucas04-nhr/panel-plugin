@@ -42,7 +42,9 @@ export class git_push extends plugin {
         }
         let result
         let cmd
-        cmd = intro + git + `git add . && git commit -m "${commit}"`
+
+        // cmd = intro + git + `git add . && git commit -m "${commit}"`
+        cmd = intro + `git add . && git commit -m "${commit}"`
 
         result = await execSync(cmd)
 
