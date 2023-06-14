@@ -35,25 +35,11 @@ export class backup extends plugin {
         }
         //2.确定操作
         let method = this.copy
-        let warning = false
         if (say.match(clean)) {
             method = this.erase
-            if (!say.match("备份")) {
-                //尝试删除非备份的面板数据，需要警告确认
-                warning = "你正在尝试删除本地面板数据\n如果你很清楚你在做什么请回复“是”继续，回复其他任何内容取消。"
-                path = [path[1], path[0]]
-            }
         }
         else if (!say.match("恢复")) {
             path = [path[1], path[0]]
-        }
-
-        if (warning) {
-            this.reply(warning)
-            let will = this.setContext('ask')
-            console.log(will)
-            if (!will) return false
-            console.log("我超")
         }
         //3.判断操作范围并执行
         if (say.match(all)) {
@@ -80,21 +66,6 @@ export class backup extends plugin {
             else
                 this.reply(`本地没有找到UID${uid}的${say.match("恢复|" + clean) ? "备份" : ""}面板数据捏，如果不是你的uid就重新绑定一下哟。`)
         }
-    }
-
-    async ask() {
-        if (/^是$/.test(this.e.msg)) {
-            console.log("寄")
-            return true
-        }
-        this.reply("好的喵，已取消操作。")
-        this.finish('ask')
-
-        return false
-    }
-
-    async do_it() {
-
     }
 
     async erase(uid_json, [at]) {
