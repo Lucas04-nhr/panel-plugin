@@ -81,7 +81,6 @@ export class compate extends plugin {
                             let level = docker.star * 4
                             docker.level = level
                             console.log(pluginINFO + `UID${uid}的${result.avatars[i].name}携带的${docker.name}的等级信息被修改为了文本，为避免后续伴生BUG已将其等级改为${level}`)
-                            //TODO：修复手贱
                         }
                         docker.mainId = attr_map[docker.main.key][0][0]
 
