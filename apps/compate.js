@@ -80,35 +80,43 @@ export class compate extends plugin {
                         let error = undefined
                         if (docker.star > 2) {
                             //一般都是四挡，除非3星都不到。
-                            let list = []
-                            //list用于记录副词条分布。元素格式：[key,value,dn,more]
-                            //key:attrId只差最后一位
-                            //value:具体多少词条(1.0档位)
-                            //dn:至少几个词条
-                            //more:还能多几个词条
                             for (let k in docker.attrs) {
                                 let { key, value } = docker.attrs[k]
-                                if (!key) {
-                                    //没内容填空
-                                    list.push([0, 0, 0, 0])
-                                    continue;
-                                }
+                                if (!key) break;
                                 //该词条非空，可以录入该词条非空，可以录入attrIds
                                 value = Number((value / attr_map[key][docker.star]).toFixed(1))
-                                if (!value) continue
-                                key = docker.star + attr_map[key][0][1]
-                                //TODO：判断有几个词条是合理的。
-                                let dn = Math.ceil(value)
-                                //最低不会比词条数还低
-                                let up = Math.floor(value / 0.7)
-                                //最高不会比词条数/0.7还高
-                                if (up > 6 || up < dn) {
-                                    error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}星圣遗物。如果是，请提交issue。`
+                                if (value > 1.0 && value < 1.4 || value < 0.7) {
+                                    error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}星圣遗物。如果是请提交issue，请务必附带游戏内截图以及本地文件截图。`
                                     break
                                 }
-                                list.push([key, value, dn, up - dn])
+                                key = docker.star + attr_map[key][0][1]
+
+                                let time = Math.round(value / 0.85)
+                                //理想情况词条数/0.85就是强化次数+1
+
+                                let left = value * 10 - time * 7
+                                //如果按0.7最低档位分配，还差left/10的词条数未分配
+
+                                let level = Math.floor(left / time)
+                                //一个一个分配，则至少都是第level+1个档位
+
+                                let overflow = value * 10 - (level + 7) * time
+                                //如此分配下来，剩几个0.1就有几个词条是需要再+1档位的
+
+                                left = time - overflow
+
+                                console.log([key, value, level, left, overflow])
+                                level++
+                                while (left--) {
+                                    console.log(level + 6)
+                                }
+                                level++
+                                while (overflow--) {
+                                    console.log(level + 6)
+                                }
+
+
                             }
-                            if (list[3][1] == 0) console.log(list)
 
                         } else {
                             //TODO:二三档圣遗物([0.8,1.0],[0.7,0.85,1.0])
