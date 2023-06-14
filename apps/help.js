@@ -6,13 +6,13 @@ export class help extends plugin {
             priority: -233,
             rule: [
                 {
-                    reg: '^#?123456789$',
+                    reg: '^#?面板(操作|处理)帮助$',
                     fnc: 'help',
-                    permission: 'master'
                 },
             ]
         })
     }
     async help() {
+        this.reply("暂时还没写帮助，请参考项目页：https://gitee.com/yunzai-panel/README")
     }
 }
