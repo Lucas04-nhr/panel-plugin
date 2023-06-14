@@ -1,10 +1,9 @@
 import a from "../model/tools.js"
 
 let { resource, MiaoPath, BackupMiaoPath } = a.getConfig("path")
-let { redisStart, errorTIP, pluginINFO } = a.getConfig("info")
+let { pluginINFO } = a.getConfig("info")
 let { backupMiao } = a.getConfig("settings")
 
-import fs from "fs"
 //attr_map:属性id到属性英文的映射
 let attr_map = a.getJSON(resource + "attr_map.json")
 
@@ -30,9 +29,12 @@ export class compate extends plugin {
     async compate_all() {
         //TODO:统计
         let list = fs.readdirSync(MiaoPath)
+        let start = await new Date().getTime()
         for (let i in list) {
             this.compate(list[i].replace(".json", ""))
+            if (!(i % 20)) console.log(`${pluginINFO}当前进度：${i}/${list.length}，用时${(await new Date().getTime() - start) / 1000}s`)
         }
+        this.reply("完成全部处理~请尽快进行一次重启，否则请求面板时会导致兼容处理失效。")
     }
     async compate_query() {
         let uid = await this.e.msg.match(/\d+/g)
@@ -76,6 +78,9 @@ export class compate extends plugin {
                         //先处理主词条
                         if (typeof (docker.level) != "number") {
                             //level被人为修改过，为避免届时无法计算主词条，默认为对应星级的满级。
+                            let level = docker.star * 4
+                            docker.level = level
+                            console.log(pluginINFO + `UID${uid}的${result.avatars[i].name}携带的${docker.name}的等级信息被修改为了文本，为避免后续伴生BUG已将其等级改为${level}`)
                             //TODO：修复手贱
                         }
                         docker.mainId = attr_map[docker.main.key][0][0]
@@ -143,7 +148,7 @@ export class compate extends plugin {
                     }
                 }
             }
-            // fs.writeFileSync(target, JSON.stringify(result))
+            fs.writeFileSync(target, JSON.stringify(result))
             return true
         } catch (e) {
             console.log(logger.red(pluginINFO + `UID${uid}报错：\n` + e))
