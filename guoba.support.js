@@ -8,7 +8,7 @@ export function supportGuoba() {
             title: '面板插件',
             author: '@硫酸钡Barite',
             authorLink: 'https://gitee.com/CUZNIL',
-            link: 'https://gitee.com/yunzai-panel/panel-plugin',
+            link: 'https://gitee.com/yunzai-panel/README',
             isV3: true,
             isV2: false,
             description: '对喵喵插件的面板数据提供操作',
