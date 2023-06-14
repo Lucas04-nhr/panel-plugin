@@ -74,8 +74,12 @@ export class compate extends plugin {
                         // console.log(result.avatars[i].artis[j])
                         //如果是旧版圣遗物数据，则进行调整。
                         //先处理主词条
+                        if (typeof (docker.level) != "number") {
+                            //level被人为修改过，为避免届时无法计算主词条，默认为对应星级的满级。
+                            //TODO：修复手贱
+                        }
                         docker.mainId = attr_map[docker.main.key][0][0]
-                        //TODO:再处理副词条
+
                         let list = []
                         let error = undefined
                         if (docker.star > 2) {
@@ -89,8 +93,9 @@ export class compate extends plugin {
                                     error = `在UID${uid}的面板文件中出现了不可能存在的词条数故跳过该圣遗物，怀疑是星级不合理导致的。\n对应圣遗物是` + logger.red(`星级为${docker.star}的${docker.name}`) + `。请在游戏中检查该用户的${result.avatars[i].name}穿戴的${docker.name}是不是${docker.star}星圣遗物。如果是请提交issue，请务必附带游戏内截图以及本地文件截图。`
                                     break
                                 }
-                                key = docker.star + attr_map[key][0][1]
+                                key = Number(docker.star + attr_map[key][0][1]) * 10
 
+                                //DELAY:精确强化次数使其合理 
                                 let time = Math.round(value / 0.85)
                                 //理想情况词条数/0.85就是强化次数+1
 
@@ -105,14 +110,14 @@ export class compate extends plugin {
 
                                 left = time - overflow
 
-                                console.log([key, value, level, left, overflow])
                                 level++
                                 while (left--) {
-                                    console.log(level + 6)
+                                    list.push(key + level)
                                 }
+
                                 level++
                                 while (overflow--) {
-                                    console.log(level + 6)
+                                    list.push(key + level)
                                 }
 
 
@@ -120,7 +125,11 @@ export class compate extends plugin {
 
                         } else {
                             //TODO:二三档圣遗物([0.8,1.0],[0.7,0.85,1.0])
+
+                            error = `暂不支持二星及以下圣遗物的兼容处理。`
+                            break
                         }
+
                         if (error) {
                             console.log(pluginINFO + error)
                             break
@@ -131,12 +140,10 @@ export class compate extends plugin {
                         delete docker.attrs
                         //调整完毕，赋值。
                         result.avatars[i].artis[j] = docker
-                        // console.log(result.avatars[i].artis[j])
                     }
                 }
             }
-            //TODO：测试完毕释放下行
-            //fs.writeFileSync(target,JSON.stringify(result))
+            // fs.writeFileSync(target, JSON.stringify(result))
             return true
         } catch (e) {
             console.log(logger.red(pluginINFO + `UID${uid}报错：\n` + e))
