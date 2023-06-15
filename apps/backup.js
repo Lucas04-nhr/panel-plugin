@@ -2,11 +2,13 @@ import a from "../model/tools.js"
 
 let { MiaoPath, GspanelPath, BackupMiaoPath, BackupGspanelPath } = a.getConfig("path")
 let { pluginINFO } = a.getConfig("info")
+let b = a.getConfig("settings")
 
 let miao = [BackupMiaoPath, MiaoPath]
 let py = [BackupGspanelPath, GspanelPath]
+let isMiao = "喵喵|miao"
 let isPy = "(p|P)(y|Y)|(G|g)spanel"
-let match = `(喵喵|miao|${isPy})?(面板|备份)+`
+let match = `(${isMiao}|${isPy})?(面板|备份)+`
 let all = "(全部|所有|all)"
 let clean = "(删除|清空|erase)"
 
@@ -17,14 +19,66 @@ export class backup extends plugin {
             event: 'message',
             priority: -233,
             rule: [
-                //暂处测试阶段，建议不要使用此处命令。
                 {
                     reg: `^#?(${clean}|恢复|备份)${all}?${match}$`,
                     fnc: 'do_backup',
                 },
+                {
+                    reg: `^#?(打开|开启|关闭)(${all}|${isMiao}|${isPy})?(自动)?备份$`,
+                    fnc: 'set_backup',
+                    permission: 'master'
+                },
             ]
         })
     }
+    async set_backup(e) {
+        let say = this.e.msg
+        let command = [true, true]
+        //command:是否对miao/gspanel设置项进行操作
+        if (say.match(isPy))
+            command[0] = false
+        else if (say.match(isMiao)) {
+            command[1] = false
+        }
+        let close = false
+        if (say.match("关闭")) close = true
+
+        let redo = [(b.backupMiao ^ close) && command[0], (b.backupGspanel ^ close) && command[1]]
+        if (redo[0] && redo[1]) {
+            this.reply(`喵喵自动备份和PY自动备份本就是${close ? "关闭" : "开启"}状态啦，不需要设置哦`)
+            return false
+        }
+        let reply = ""
+        if (redo[0]) {
+            reply = `喵喵自动备份本就是${close ? "关闭" : "开启"}状态啦，不需要设置哦~\n`
+            command[0] = false
+        }
+        else if (redo[1]) {
+            reply = `PY自动备份本就是${close ? "关闭" : "开启"}状态啦，不需要设置哦~\n`
+            command[1] = false
+        }
+        if (command[0] || command[1]) {
+            let list = []
+            let c = []
+            if (command[0]) {
+                b.backupMiao = !close
+                list.push("喵喵")
+                c.push("#清空所有喵喵备份")
+            }
+            if (command[1]) {
+                b.backupGspanel = !close
+                list.push("PY")
+                c.push("#清空所有PY备份")
+            }
+            list = list.join("、")
+            c = c.join("、")
+            reply += close ? `已关闭${list}自动备份，如不需要过去的备份数据请发送${c}` : `已打开${list}自动备份~在操作${list}面板时会进行备份`
+            reply += "\n请手动重启已确保设置生效~ "
+            fs.writeFileSync("plugins/panel-plugin/config/settings.json", JSON.stringify(b))
+        }
+        this.reply(reply)
+    }
+
     async do_backup(e) {
         //1.确定路径
         let say = this.e.msg
@@ -58,7 +112,6 @@ export class backup extends plugin {
             //如果请求对单个内容进行操作，那就需要判断请求者的UID。
             let qq = await this.e.user_id
             let uid = await a.findUID(qq)
-            //TODO:uid
             let filename = uid + ".json"
             if (fs.existsSync(path[0] + filename))
                 method(filename, path)
@@ -69,8 +122,7 @@ export class backup extends plugin {
 
     async erase(uid_json, [at]) {
         //TODO
-        console.log("yes")
-        console.log(ori_path)
+
     }
 
     async copy(uid_json, [from, to]) {
