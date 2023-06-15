@@ -10,6 +10,11 @@ function getConfig(name) {
     return getJSON(`plugins/panel-plugin/config/${name}.json`)
 }
 
+function getHtml(name) {
+    //获取html相关设置
+    return getJSON(`plugins/panel-plugin/resources/html/config/${name}.json`)
+}
+
 async function download(url, filename) {
     //下载必要资源到resource文件夹
     let response = url + filename
@@ -24,5 +29,5 @@ async function findUID(QQ) {
 }
 
 export default {
-    getJSON, getConfig, download, findUID
+    getJSON, getConfig, getHtml, download, findUID
 }

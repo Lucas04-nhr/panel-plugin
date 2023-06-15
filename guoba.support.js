@@ -17,7 +17,7 @@ export function supportGuoba() {
             // 图标颜色，例：#FF0000 或 rgb(255, 0, 0)
             iconColor: '#66CCFF',
             // 如果想要显示成图片，也可以填写图标路径（绝对路径）
-            iconPath: `plugins/panel-plugin/resources/img/klee.ico`,
+            iconPath: `plugins/panel-plugin/resources/img/icon/klee.ico`,
         },
         configInfo: {
             schemas: [
