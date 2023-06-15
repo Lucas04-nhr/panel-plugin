@@ -40,9 +40,10 @@ body {
   font-family: 'tttgbnumber';
   padding: 10px 20px;
   position: relative;
-  color: rgb(0, 85, 255);
+  color: red;
   /*大标题颜色*/
-  box-shadow: 0 5px 10px 0 rgba(0, 81, 255, 0.5);
+  box-shadow: 0 5px 10px 0 rgba(255, 255, 0, 0.5);
+  background: #ffffff62;
 }
 
 .head_box .id_text {
@@ -76,8 +77,8 @@ body {
   position: absolute;
   top: -10px;
   left: -8px;
-  background-color: rgb(0, 85, 255);
-  box-shadow: 0 0 1px 0 rgb(0, 0, 0), 2px 2px 4px 0 rgba(0, 166, 255, 0.8);
+  background-color: red;
+  box-shadow: 0 0 1px 0 rgb(0, 0, 0), 2px 2px 4px 0 rgba(255, 255, 0, 0.8);
   color: rgb(255, 255, 255);
   font-family: 'genshin';
   font-size: 14px;
@@ -96,9 +97,9 @@ body {
   width: 235px;
   display: flex;
   align-items: center;
-  color: rgb(0, 80, 255);
-  background: #ff000018;
-  box-shadow: 0 0 1px 0 rgb(0, 0, 0), 2px 2px 4px 0 rgba(0, 120, 255, 0.8);
+  color: red;
+  background: #ffffff62;
+  box-shadow: 0 0 1px 0 rgb(255, 255, 255), 2px 2px 4px 0 rgba(255, 255, 0, 0.8);
   padding: 8px 6px 8px 6px;
   border-radius: 8px;
   margin: 0 0px 10px 10px;
@@ -133,6 +134,6 @@ body {
 .logo {
   text-align: center;
   font-size: 14px;
-  color: rgb(0, 125, 255);
+  color: pink;
   font-family: 'genshin';
 }
