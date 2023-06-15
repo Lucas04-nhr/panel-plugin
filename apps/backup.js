@@ -71,8 +71,8 @@ export class backup extends plugin {
                 c.push("#清空所有PY备份")
             }
             list = list.join("、")
-            c = c.join("、")
-            reply += close ? `已关闭${list}自动备份，如不需要过去的备份数据请发送${c}` : `已打开${list}自动备份~在操作${list}面板时会进行备份`
+            c = c.join("\n")
+            reply += close ? `已关闭${list}自动备份，如不需要过去的备份数据请发送\n${c}` : `已打开${list}自动备份~在操作${list}面板时会进行备份`
             reply += "\n请手动重启已确保设置生效~ "
             fs.writeFileSync("plugins/panel-plugin/config/settings.json", JSON.stringify(b))
         }
