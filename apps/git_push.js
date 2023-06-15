@@ -13,7 +13,7 @@ export class git_push extends plugin {
             priority: -233,
             rule: [
                 {
-                    reg: '^#?上传插件.*$',
+                    reg: '^#?(上传|提交)插件.*$',
                     fnc: 'git_push',
                     permission: 'master'
                 },
@@ -22,7 +22,7 @@ export class git_push extends plugin {
     }
 
 
-    async git_push() {
+    async git_push(e) {
         let name, email, password
         try {
             ({ name, email, password } = a.getConfig("git"))
@@ -30,12 +30,13 @@ export class git_push extends plugin {
             this.reply("芝士作者上传插件用的指令喵，你没必要用喵")
             return false
         }
+        let isPush = this.e.msg.match(/^#?上传插件.*/g)
 
 
         let intro = `cd plugins/panel-plugin && `
         let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
 
-        let commit = this.e.msg.replace(/#?上传插件/g, "")
+        let commit = this.e.msg.replace(/#?提交插件/g, "")
         if (!commit) {
             this.reply("需要commit信息")
             return false
@@ -47,6 +48,8 @@ export class git_push extends plugin {
         cmd = intro + `git add . && git commit -m "${commit}"`
 
         result = await execSync(cmd)
+
+        if (isPush) return true
 
         cmd = intro + `git push`
 
