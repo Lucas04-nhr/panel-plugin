@@ -6,7 +6,7 @@ logger.info(`_______(σﾟ∀ﾟ)σ..:*☆______`);
 logger.info(`面板插件加载完毕~`)
 logger.info(`仓库地址：https://gitee.com/CUZNIL/panel-plugin`);
 logger.info(`插件/BOT交流群：638077675`);
-logger.info(`帮助指令：#面板操作帮助 （私密马赛！还没写完帮助！）`);
+logger.info(`帮助指令：#面板操作帮助`);
 logger.info(`_______ヾ(o´∀｀o)ﾉ _______`);
 
 
