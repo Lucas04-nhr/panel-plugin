@@ -1,11 +1,8 @@
-// import base from "./base.js";
 import a from "./tools.js"
-// import ConfigSet from "./ConfigSet.js";
 import cfg from "../../../lib/config/config.js";
 
 export default class Help {
     constructor(e = {}) {
-        // super(e);
         this.e = e;
         this.userId = e?.user_id;
         this._path = process.cwd().replace(/\\/g, "/");
@@ -26,7 +23,6 @@ export default class Help {
     }
 
     async getData() {
-        // let helpData = ConfigSet.getdefSet("help", "set");
         let helpData = a.getHtml("help")
 
         let groupCfg = cfg.getGroup(this.group_id);
@@ -40,7 +36,6 @@ export default class Help {
             });
         }
 
-        // let versionData = ConfigSet.getdefSet("version", "set");
         let versionData = a.getHtml("version")
 
         const version =

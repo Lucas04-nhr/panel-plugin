@@ -1,10 +1,5 @@
-// import plugin from '../../../lib/plugins/plugin.js'
-// import puppeteer from "../../../lib/puppeteer/puppeteer.js"
 import Help from "../model/help.js"
 import md5 from "md5"
-// import a from "../model/tools.js"
-// import YAML from "yaml"
-// import fs from "fs"
 
 let helpData = {
     md5: "",
@@ -27,7 +22,6 @@ export class help extends plugin {
         })
     }
     async help() {
-        // this.reply("暂时还没写帮助，请参考项目页：https://gitee.com/yunzai-panel/README")
 
         let data = await Help.get(this.e);
 
