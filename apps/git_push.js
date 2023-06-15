@@ -30,13 +30,13 @@ export class git_push extends plugin {
             this.reply("芝士作者上传插件用的指令喵，你没必要用喵")
             return false
         }
-        let isPush = this.e.msg.match(/^#?上传插件.*/g)
+        let isPush = this.e.msg.match(/^#?提交插件.*/g)
 
 
         let intro = `cd plugins/panel-plugin && `
         let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
 
-        let commit = this.e.msg.replace(/#?提交插件/g, "")
+        let commit = this.e.msg.replace(/#?(提交|上传)插件/g, "")
         if (!commit) {
             this.reply("需要commit信息")
             return false
