@@ -121,8 +121,7 @@ export class backup extends plugin {
     }
 
     async erase(uid_json, [at]) {
-        //TODO
-
+        fs.rmSync(at + uid_json)
     }
 
     async copy(uid_json, [from, to]) {
