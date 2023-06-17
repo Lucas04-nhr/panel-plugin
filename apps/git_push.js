@@ -42,6 +42,7 @@ export class git_push extends plugin {
         let result = await execSync(cmd)
         logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
         this.reply(result.stderr.trim())
+        this.reply("因为我也不知道怎么解决的问题，第一次上传插件还是需要手动输入密码。")
     }
 
     async git_push(e) {
