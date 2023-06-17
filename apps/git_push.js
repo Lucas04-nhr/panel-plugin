@@ -1,9 +1,5 @@
 //只是为了方便提交写的，与插件功能无关。
 
-import a from "../model/tools.js"
-
-
-
 let intro = `cd plugins/panel-plugin && `
 
 export class git_push extends plugin {
@@ -13,6 +9,7 @@ export class git_push extends plugin {
             event: 'message',
             priority: -233,
             rule: [
+                //芝士作者上传插件用的指令喵，插件用户没必要用喵
                 {
                     reg: '^#?(上传|提交)插件.*$',
                     fnc: 'git_push',
@@ -28,21 +25,14 @@ export class git_push extends plugin {
     }
 
     async git_set() {
-
-        let name, email, password
-        try {
-            ({ name, email, password } = a.getConfig("git"))
-        } catch (e) {
-            this.reply("芝士作者上传插件用的指令喵，你没必要用喵")
-            return false
-        }
-
-        let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}"`
+        let name = "cuznil"
+        let email = "iamliujunxi@qq.com"
+        let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}"`
         let cmd = intro + git
         let result = await execSync(cmd)
         logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
         this.reply(result.stderr.trim())
-        this.reply("因为我也不知道怎么解决的问题，第一次上传插件还是需要手动输入密码。")
+        this.reply("注意第一次上传插件需要手动输入密码。")
     }
 
     async git_push(e) {
