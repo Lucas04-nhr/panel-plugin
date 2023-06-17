@@ -6,6 +6,9 @@ let helpData = {
     img: "",
 }
 
+let how = "(操作|处理|兼容|调整|转换|_|-)"
+let panel = "(panel|面板|面包)"
+let hreg = "(帮助|help|菜单|指令)"
 
 export class help extends plugin {
     constructor() {
@@ -15,7 +18,7 @@ export class help extends plugin {
             priority: -233,
             rule: [
                 {
-                    reg: '^#?面板(操作|处理)帮助$',
+                    reg: `^#?(${how}${panel}|${panel}${how})${hreg}$`,
                     fnc: 'help',
                 },
             ]
