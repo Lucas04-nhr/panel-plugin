@@ -3,17 +3,17 @@
         "group": "面板转换:miao→gspanel",
         "list": [
             {
-                "icon": "install",
+                "icon": "creeper",
                 "title": "#转换面板",
                 "desc": "转换当前用户的面板以供Gspanel使用"
             },
             {
-                "icon": "batch",
+                "icon": "creeper",
                 "title": "#转换面板123456789",
                 "desc": "转换UID123456789的面板"
             },
             {
-                "icon": "batch",
+                "icon": "creeper",
                 "title": "#转换全部面板",
                 "desc": "(管理员可用)转换所有面板"
             }
@@ -23,67 +23,67 @@
         "group": "面板兼容:miao→miao",
         "list": [
             {
-                "icon": "install",
+                "icon": "creeper",
                 "title": "#调整面板",
                 "desc": "调整当前用户的面板以免miao-plugin无法识别"
             },
             {
-                "icon": "batch",
+                "icon": "creeper",
                 "title": "#调整面板987654321",
                 "desc": "调整UID987654321的面板"
             },
             {
-                "icon": "batch",
+                "icon": "creeper",
                 "title": "#调整全部面板",
                 "desc": "(管理员可用)调整所有面板"
             }
         ]
     },
     {
-        "group": "面板备份: *↔backup",
+        "group": "面板备份: *←→backup",
         "list": [
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#删除喵喵备份",
                 "desc": "删除本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#恢复喵喵备份",
                 "desc": "恢复本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#备份喵喵面板",
                 "desc": "主动进行一次本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#删除PY备份",
                 "desc": "删除本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#恢复PY备份",
                 "desc": "恢复本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#备份PY面板",
                 "desc": "主动进行一次本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#删除全部喵喵/PY备份",
                 "desc": "(管理员可用)删除所有本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#恢复全部喵喵/PY备份",
                 "desc": "(管理员可用)恢复所有本地备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#备份全部喵喵/PY面板",
                 "desc": "(管理员可用)对所有数据主动进行一次本地备份"
             }
@@ -93,17 +93,17 @@
         "group": "备份设置",
         "list": [
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#关闭/打开所有自动备份",
                 "desc": "总开关"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#关闭/打开喵喵自动备份",
                 "desc": "调整面板时是否自动备份"
             },
             {
-                "icon": "list",
+                "icon": "creeper",
                 "title": "#关闭/打开PY自动备份",
                 "desc": "转换面板时是否自动备份"
             }
@@ -113,32 +113,32 @@
         "group": "主动数据更新",
         "list": [
             {
-                "icon": "sync",
+                "icon": "creeper",
                 "title": "#面板路径更新",
                 "desc": "如提示无法定位到Gspanel面板可尝试"
             },
             {
-                "icon": "gplist",
+                "icon": "creeper",
                 "title": "#武器数据更新",
                 "desc": "如出现武器图标错误可尝试"
             },
             {
-                "icon": "create",
+                "icon": "creeper",
                 "title": "#主角命座更新",
                 "desc": "如出现旅行者命座图标错误可尝试"
             },
             {
-                "icon": "remove",
+                "icon": "creeper",
                 "title": "#属性映射更新",
                 "desc": "如出现属性昵称错误可尝试"
             },
             {
-                "icon": "set",
+                "icon": "creeper",
                 "title": "#圣遗物套装更新",
                 "desc": "如出现圣遗物套装错误可尝试"
             },
             {
-                "icon": "sync",
+                "icon": "creeper",
                 "title": "#圣遗物主词条更新",
                 "desc": "如出现圣遗物主词条大小错误可尝试"
             }
@@ -148,12 +148,12 @@
         "group": "其他指令",
         "list": [
             {
-                "icon": "gplist",
+                "icon": "creeper",
                 "title": "#面板操作帮助",
                 "desc": "获取该插件的帮助信息(即你看到的这张图)"
             },
             {
-                "icon": "gplist",
+                "icon": "creeper",
                 "title": "#(上传|提交)插件.*",
                 "desc": "git操作(暂时仅供作者使用)"
             }

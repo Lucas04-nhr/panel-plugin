@@ -6,14 +6,14 @@ let helpData = {
     img: "",
 }
 
-let how = "(操作|处理|兼容|调整|转换|_|-)"
+let how = "(操作|处理|兼容|调整|转换|备份|_|-)"
 let panel = "(panel|面板|面包)"
 let hreg = "(帮助|help|菜单|指令)"
 
 export class help extends plugin {
     constructor() {
         super({
-            name: '帮助',
+            name: '面板操作帮助',
             event: 'message',
             priority: -233,
             rule: [
