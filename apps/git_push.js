@@ -4,6 +4,7 @@ import a from "../model/tools.js"
 
 
 
+let intro = `cd plugins/panel-plugin && `
 
 export class git_push extends plugin {
     constructor() {
@@ -17,12 +18,17 @@ export class git_push extends plugin {
                     fnc: 'git_push',
                     permission: 'master'
                 },
+                {
+                    reg: '^#?git登录$',
+                    fnc: 'git_set',
+                    permission: 'master'
+                },
             ]
         })
     }
 
+    async git_set() {
 
-    async git_push(e) {
         let name, email, password
         try {
             ({ name, email, password } = a.getConfig("git"))
@@ -30,11 +36,17 @@ export class git_push extends plugin {
             this.reply("芝士作者上传插件用的指令喵，你没必要用喵")
             return false
         }
+
+        let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}"`
+        let cmd = intro + git
+        let result = await execSync(cmd)
+        logger.mark(`${result.stdout.trim()}\n${logger.red(result.stderr.trim())}`)
+        this.reply(result.stderr.trim())
+    }
+
+    async git_push(e) {
         let isPush = this.e.msg.match(/^#?提交插件.*/g)
 
-
-        let intro = `cd plugins/panel-plugin && `
-        let git = `git config --global credential.helper store && git config --global credential.username "${name}" && git config --global user.name "${name}" && git config --global user.email "${email}" && git config --global user.password "${password}" && `
 
         let commit = this.e.msg.replace(/#?(提交|上传)插件/g, "")
         if (!commit) {
@@ -44,7 +56,6 @@ export class git_push extends plugin {
         let result
         let cmd
 
-        // cmd = intro + git + `git add . && git commit -m "${commit}"`
         cmd = intro + `git add . && git commit -m "${commit}"`
 
         result = await execSync(cmd)
