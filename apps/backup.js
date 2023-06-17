@@ -102,6 +102,8 @@ export class backup extends plugin {
                 let list = fs.readdirSync(path[0])
                 let start = await new Date().getTime()
                 for (let i in list) {
+                    if (list[i] == ".gitkeep")
+                        continue
                     method(list[i], path)
                     if (!(i % 20)) console.log(`${pluginINFO}当前进度：${i}/${list.length}，用时${(await new Date().getTime() - start) / 1000}s`)
                 }
