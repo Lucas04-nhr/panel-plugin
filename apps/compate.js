@@ -115,15 +115,24 @@ export class compate extends plugin {
                                 left = time - overflow
 
                                 level++
-                                while (left--) {
-                                    list.push(key + level)
-                                }
+                                if (level >= 4) {
+                                    console.log(pluginINFO + "疑似被修改的面板，为避免bug只能调整为正常面板")
+                                    level = 4
+                                    overflow += left
+                                } else {
+                                    while (left--) {
+                                        list.push(key + level)
+                                    }
 
-                                level++
+                                    level++
+                                    if (level > 4) {
+                                        console.log(pluginINFO + "疑似被修改的面板，为避免bug只能调整为正常面板")
+                                        level = 4
+                                    }
+                                }
                                 while (overflow--) {
                                     list.push(key + level)
                                 }
-
 
                             }
 

@@ -399,6 +399,7 @@ export class miaoToGspanel extends plugin {
                             MiaoArtis.attrs[k].value = Number(MiaoArtis.attrs[k].value.toFixed(5))
                         }
                     }
+
                     //artis：Gspanel的具体圣遗物
                     let artis = {
                         "pos": Number(j),
@@ -437,6 +438,7 @@ export class miaoToGspanel extends plugin {
                         }
                         artis.calc.sub[index] = { "style": "great", "goal": 6.6 }
                     }
+
                     if (result.relicSet[artis.setName])
                         result.relicSet[artis.setName]++
                     else
