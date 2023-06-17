@@ -1,2 +1,3 @@
-resources/panel_backup/*/*.json
+resources/panel_backup/miao-plugin/*.json
+resources/panel_backup/nonebot-plugin-gspanel/*.json
 config/git.json
