@@ -1,2 +1,2 @@
-resources/panel_backup/*/*
+resources/panel_backup/+/+
 config/git.json

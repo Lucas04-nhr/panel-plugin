@@ -5,7 +5,7 @@ let { redisStart, errorTIP, pluginINFO } = a.getJSON("plugins/panel-plugin/confi
 
 let { backupGspanel } = a.getConfig("settings")
 
-// console.log(MiaoResourecePath.toString())
+
 if (!fs.existsSync(GspanelPath)) {
     logger.error(errorTIP)
 }

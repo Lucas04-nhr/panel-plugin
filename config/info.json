@@ -1,5 +1,5 @@
 {
     "redisStart": "Yz:genshin:mys:qq-uid:",
-    "errorTIP": "请仔细阅读README，你没有正确配置！可能是以下原因：\n1.你不是通过py-plugin安装的nonebot-plugin-gspanel\n2.你没有正确配置nonebot-plugin-gspanel\n3.你没有正确配置本js插件\n。。。\n为解决本问题请自行阅读https://gitee.com/CUZNIL/Yunzai-MiaoToGspanel",
+    "errorTIP": "请仔细阅读README，你没有正确配置！可能是以下原因：\n1.你不是通过py-plugin安装的nonebot-plugin-gspanel\n2.你没有正确配置nonebot-plugin-gspanel\n3.你没有正确配置插件\n。。。\n为解决本问题请自行阅读https://gitee.com/yunzai-panel/README，如果无法解决请提交issue",
     "pluginINFO": "【MiaoToGspanel插件】"
 }
