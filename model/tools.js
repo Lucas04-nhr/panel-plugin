@@ -1,5 +1,7 @@
 let { resource } = getConfig("path")
 let { redisStart } = getConfig("info")
+import fs from "fs"
+
 function getJSON(url) {
     //获取指定绝对路径的json
     return JSON.parse(fs.readFileSync(url))
