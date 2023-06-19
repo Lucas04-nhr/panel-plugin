@@ -57,6 +57,17 @@ export function supportGuoba() {
                     label: '以下内容一般不需要修改',
                 },
                 {
+                    field: 'info.redisStart',
+                    label: 'redis抬头',
+                    bottomHelpMessage: '存储qq-uid的redis字段的开头，Miao-Yunzai似乎需要修改。',
+                    helpMessage: '手动填写务必保证路径结尾有/，以下路径同理。',
+                    component: 'Input',
+                    required: true,
+                    componentProps: {
+                        placeholder: '存储qq-uid的redis字段的开头，Miao-Yunzai似乎需要修改。',
+                    },
+                },
+                {
                     field: 'path.resource',
                     label: '插件资源位置',
                     bottomHelpMessage: '该插件产生的中间文件存放的文件夹位置。download函数会默认下载文件到该位置。',
