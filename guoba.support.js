@@ -60,7 +60,7 @@ export function supportGuoba() {
                     field: 'info.redisStart',
                     label: 'redis抬头',
                     bottomHelpMessage: '存储qq-uid的redis字段的开头，Miao-Yunzai似乎需要修改。',
-                    helpMessage: '手动填写务必保证路径结尾有/，以下路径同理。',
+                    helpMessage: '如果是Le-Yunzai不需要修改，默认为"Yz:genshin:mys:qq-uid:"即可',
                     component: 'Input',
                     required: true,
                     componentProps: {
