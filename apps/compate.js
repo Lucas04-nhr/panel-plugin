@@ -1,4 +1,5 @@
 import a from "../model/tools.js"
+import fs from 'fs'
 
 let { resource, MiaoPath, BackupMiaoPath } = a.getConfig("path")
 let { pluginINFO } = a.getConfig("info")

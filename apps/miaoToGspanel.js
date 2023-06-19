@@ -1,4 +1,5 @@
 import a from "../model/tools.js"
+import fs from 'fs'
 
 let { resource, MiaoPath, GspanelPath, MiaoResourecePath, BackupGspanelPath } = a.getJSON("plugins/panel-plugin/config/path.json")
 let { redisStart, errorTIP, pluginINFO } = a.getJSON("plugins/panel-plugin/config/info.json")
