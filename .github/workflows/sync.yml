@@ -26,7 +26,7 @@ jobs:
     - name: Pull from Gitee
       run: |
         git remote add gitee https://gitee.com/yunzai-panel/panel-plugin.git
-        git pull gitee master  # Assuming 'main' is your default branch, change it if needed
+        git fetch gitee  # Assuming 'main' is your default branch, change it if needed
         git merge --allow-unrelated-histories --no-ff gitee/master
         
     - name: Configure SSH Key
