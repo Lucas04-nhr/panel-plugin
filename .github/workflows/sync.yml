@@ -22,7 +22,6 @@ jobs:
     - name: Set Git Configuration
       run: |
         git config pull.rebase false
-        git config pull.ff only
 
     - name: Pull from Gitee
       run: |
