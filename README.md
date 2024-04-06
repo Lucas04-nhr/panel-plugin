@@ -74,3 +74,4 @@ git clone git@github.com:Lucas04-nhr/panel-plugin.git
 ## 参考内容
 
 [土块](https://gitee.com/SmallK111407/earth-k-plugin) [TRSS](https://gitee.com/TimeRainStarSky/TRSS-Plugin) [auto](https://gitee.com/Nwflower/auto-plugin) [锅巴](https://gitee.com/guoba-yunzai/guoba-plugin) [miao](https://gitee.com/yoimiya-kokomi/miao-plugin) [戏天](https://gitee.com/XiTianGame/xitian-plugin)
+//1
